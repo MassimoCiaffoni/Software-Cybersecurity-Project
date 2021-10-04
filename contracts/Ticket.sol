@@ -6,18 +6,15 @@ import "./Event.sol";
 
 contract Ticket {
     
+    address private owner= msg.sender;
+    uint256 private balance=owner.balance;
+    Event e= new Event(event_address);
     
-    struct TicketData{
-        uint TicketId;
-        bool validated;
+    function get_balance() public view returns (uint256){
+        return balance;
     }
+ 
     
-    TicketData[] private tickets;
     
-    function buy_ticket(uint event_id) public payable {
-        EventData evento=get_event(event_id);
-        require(evento.state=="Annullato" , "L'evento è stato Annullato");
-        require(evento.state=="Concluso" , "L'evento è già concluso");
-        require(evento.remaining_tickets > 0, "Nessun biglietto disponibile");
-    }
+    
 }

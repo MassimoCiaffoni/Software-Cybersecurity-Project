@@ -1,0 +1,98 @@
+{
+	"compiler": {
+		"version": "0.8.7+commit.e28d00a7"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "eventid",
+						"type": "uint256"
+					}
+				],
+				"name": "buy_ticket",
+				"outputs": [],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "get_balance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "surname",
+						"type": "string"
+					}
+				],
+				"name": "set_customer",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/Ticket.sol": "Ticket"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/Event.sol": {
+			"keccak256": "0x0c195b2e541f15af0f99e16983de26aff22b380d281444bca40f12551caeffb0",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://bd3eb7a40110c2e6218aab4ef8f87ba7184f85981e34891a45694cf059e6f8d2",
+				"dweb:/ipfs/QmUQxBmuiAX97uboja6p6NQrnt8QMPJPuByvj3Qheye47W"
+			]
+		},
+		"contracts/Ticket.sol": {
+			"keccak256": "0xa3bee1600d91147e7117340a29f8634c54ceb92d5237ced097fd0fcdf655cedc",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://735ad6a51dfac898ea17907d2352ce241ad0863bca10bfb0f83324a466cdac55",
+				"dweb:/ipfs/Qmbhi5SLbTDJrFLCTFCXMUfCnRgEYTPDLKaAY7RmzjdxAZ"
+			]
+		}
+	},
+	"version": 1
+}

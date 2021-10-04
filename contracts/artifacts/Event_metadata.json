@@ -44,6 +44,31 @@
 				"type": "event"
 			},
 			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "eventid",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "totalticket",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "creator",
+						"type": "address"
+					}
+				],
+				"name": "TicketsGenerated",
+				"type": "event"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "string",
@@ -69,6 +94,11 @@
 						"internalType": "int256",
 						"name": "price",
 						"type": "int256"
+					},
+					{
+						"internalType": "address",
+						"name": "res",
+						"type": "address"
 					}
 				],
 				"name": "create_event",
@@ -143,6 +173,62 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "eventid",
+						"type": "uint256"
+					}
+				],
+				"name": "get_event_ticket",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "surname",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "ticketid",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "eventid",
+								"type": "uint256"
+							},
+							{
+								"internalType": "int256",
+								"name": "price",
+								"type": "int256"
+							},
+							{
+								"internalType": "bool",
+								"name": "sell",
+								"type": "bool"
+							},
+							{
+								"internalType": "bool",
+								"name": "validate",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct Event.TicketData",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "get_events",
 				"outputs": [
@@ -203,45 +289,29 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "id",
-						"type": "uint256"
-					}
-				],
-				"name": "overrlue_event",
+				"inputs": [],
+				"name": "get_tickets",
 				"outputs": [
 					{
 						"components": [
 							{
-								"internalType": "uint256",
-								"name": "id",
-								"type": "uint256"
-							},
-							{
 								"internalType": "string",
-								"name": "title",
+								"name": "name",
 								"type": "string"
 							},
 							{
 								"internalType": "string",
-								"name": "luogo",
-								"type": "string"
-							},
-							{
-								"internalType": "string",
-								"name": "date",
+								"name": "surname",
 								"type": "string"
 							},
 							{
 								"internalType": "uint256",
-								"name": "seats",
+								"name": "ticketid",
 								"type": "uint256"
 							},
 							{
 								"internalType": "uint256",
-								"name": "remaining_tickets",
+								"name": "eventid",
 								"type": "uint256"
 							},
 							{
@@ -250,21 +320,47 @@
 								"type": "int256"
 							},
 							{
-								"internalType": "string",
-								"name": "state",
-								"type": "string"
+								"internalType": "bool",
+								"name": "sell",
+								"type": "bool"
 							},
 							{
-								"internalType": "address",
-								"name": "owner",
-								"type": "address"
+								"internalType": "bool",
+								"name": "validate",
+								"type": "bool"
 							}
 						],
-						"internalType": "struct Event.EventData",
+						"internalType": "struct Event.TicketData[]",
 						"name": "",
-						"type": "tuple"
+						"type": "tuple[]"
 					}
 				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					}
+				],
+				"name": "overrlue_event",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "r",
+						"type": "address"
+					}
+				],
+				"name": "set_reseller",
+				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			}
@@ -297,11 +393,11 @@
 	},
 	"sources": {
 		"contracts/Event.sol": {
-			"keccak256": "0xc750628fab180499562108648268adaf890b001bec35587c283a0a4a960de64b",
+			"keccak256": "0x0c195b2e541f15af0f99e16983de26aff22b380d281444bca40f12551caeffb0",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://f5c862fa91e21dedca1972e5514e435580d10971e7ada7eb5933af0613d99c69",
-				"dweb:/ipfs/QmZ38SvETobz2FJzgqsjM4HKVB1npSUHMaRgGAeckJcSSv"
+				"bzz-raw://bd3eb7a40110c2e6218aab4ef8f87ba7184f85981e34891a45694cf059e6f8d2",
+				"dweb:/ipfs/QmUQxBmuiAX97uboja6p6NQrnt8QMPJPuByvj3Qheye47W"
 			]
 		}
 	},
