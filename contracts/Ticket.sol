@@ -8,11 +8,24 @@ contract Ticket {
     
     address private owner= msg.sender;
     uint256 private balance=owner.balance;
-    Event e= new Event(event_address);
+    address public eventAddress;
+    string private name;
+    string private surname;
+    
+    
+    constructor(address _eventAddress) public {
+        eventAddress = _eventAddress;
+    }
     
     function get_balance() public view returns (uint256){
         return balance;
     }
+    
+    function buy_ticket(uint eventid, address payable indirizzo, string memory nome, string memory cognome) public returns(string memory){
+        Event ev= Event(eventAddress);
+         return ev.buy_ticket(eventid, indirizzo, nome, cognome);
+    }
+    
  
     
     

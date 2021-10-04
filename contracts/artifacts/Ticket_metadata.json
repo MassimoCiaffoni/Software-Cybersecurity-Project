@@ -8,13 +8,58 @@
 			{
 				"inputs": [
 					{
+						"internalType": "address",
+						"name": "_eventAddress",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "uint256",
 						"name": "eventid",
 						"type": "uint256"
+					},
+					{
+						"internalType": "address payable",
+						"name": "indirizzo",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "nome",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "cognome",
+						"type": "string"
 					}
 				],
 				"name": "buy_ticket",
-				"outputs": [],
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "eventAddress",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
 				"stateMutability": "view",
 				"type": "function"
 			},
@@ -29,24 +74,6 @@
 					}
 				],
 				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "string",
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "surname",
-						"type": "string"
-					}
-				],
-				"name": "set_customer",
-				"outputs": [],
-				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -78,19 +105,19 @@
 	},
 	"sources": {
 		"contracts/Event.sol": {
-			"keccak256": "0x0c195b2e541f15af0f99e16983de26aff22b380d281444bca40f12551caeffb0",
+			"keccak256": "0x7c2e85c99a95adbe419333848bb79fe4019139be2d158c91d41feb84327e1f3b",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://bd3eb7a40110c2e6218aab4ef8f87ba7184f85981e34891a45694cf059e6f8d2",
-				"dweb:/ipfs/QmUQxBmuiAX97uboja6p6NQrnt8QMPJPuByvj3Qheye47W"
+				"bzz-raw://242c57aad30e0e3de5442947e7f068948ad3822dd043034f03daa9689e6a4339",
+				"dweb:/ipfs/QmcKx1bahDkLyLLgih29oAewh9E2xh3oHekoCn5jLFWHXc"
 			]
 		},
 		"contracts/Ticket.sol": {
-			"keccak256": "0xa3bee1600d91147e7117340a29f8634c54ceb92d5237ced097fd0fcdf655cedc",
+			"keccak256": "0x9fdb7b75311e5b8ad2c4eb02e61d5f8106b4a1bf0035028ba1f4bcd133160d2c",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://735ad6a51dfac898ea17907d2352ce241ad0863bca10bfb0f83324a466cdac55",
-				"dweb:/ipfs/Qmbhi5SLbTDJrFLCTFCXMUfCnRgEYTPDLKaAY7RmzjdxAZ"
+				"bzz-raw://4fdcf6e8248d8ac578193823e2207acafd09c73430ae25738cc4d2161614372a",
+				"dweb:/ipfs/QmXH3aCP5qHv7dUdASeVumwiFB28Zt4tRxjgnvsPnhXqvT"
 			]
 		}
 	},

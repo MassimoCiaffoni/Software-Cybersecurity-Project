@@ -40,6 +40,25 @@
 						"type": "address"
 					}
 				],
+				"name": "EventFinished",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "eventid",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "creator",
+						"type": "address"
+					}
+				],
 				"name": "EventOverrlue",
 				"type": "event"
 			},
@@ -71,6 +90,40 @@
 			{
 				"inputs": [
 					{
+						"internalType": "uint256",
+						"name": "eventid",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address payable",
+						"name": "customer",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "surname",
+						"type": "string"
+					}
+				],
+				"name": "buy_ticket",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "string",
 						"name": "title",
 						"type": "string"
@@ -91,9 +144,9 @@
 						"type": "uint256"
 					},
 					{
-						"internalType": "int256",
+						"internalType": "uint256",
 						"name": "price",
-						"type": "int256"
+						"type": "uint256"
 					},
 					{
 						"internalType": "address",
@@ -102,6 +155,19 @@
 					}
 				],
 				"name": "create_event",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					}
+				],
+				"name": "finish_event",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -149,9 +215,9 @@
 								"type": "uint256"
 							},
 							{
-								"internalType": "int256",
+								"internalType": "uint256",
 								"name": "price",
-								"type": "int256"
+								"type": "uint256"
 							},
 							{
 								"internalType": "string",
@@ -166,62 +232,6 @@
 						],
 						"internalType": "struct Event.EventData",
 						"name": "evento",
-						"type": "tuple"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "eventid",
-						"type": "uint256"
-					}
-				],
-				"name": "get_event_ticket",
-				"outputs": [
-					{
-						"components": [
-							{
-								"internalType": "string",
-								"name": "name",
-								"type": "string"
-							},
-							{
-								"internalType": "string",
-								"name": "surname",
-								"type": "string"
-							},
-							{
-								"internalType": "uint256",
-								"name": "ticketid",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "eventid",
-								"type": "uint256"
-							},
-							{
-								"internalType": "int256",
-								"name": "price",
-								"type": "int256"
-							},
-							{
-								"internalType": "bool",
-								"name": "sell",
-								"type": "bool"
-							},
-							{
-								"internalType": "bool",
-								"name": "validate",
-								"type": "bool"
-							}
-						],
-						"internalType": "struct Event.TicketData",
-						"name": "",
 						"type": "tuple"
 					}
 				],
@@ -265,9 +275,9 @@
 								"type": "uint256"
 							},
 							{
-								"internalType": "int256",
+								"internalType": "uint256",
 								"name": "price",
-								"type": "int256"
+								"type": "uint256"
 							},
 							{
 								"internalType": "string",
@@ -283,6 +293,19 @@
 						"internalType": "struct Event.EventData[]",
 						"name": "",
 						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "get_ticket_lenght",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -313,11 +336,6 @@
 								"internalType": "uint256",
 								"name": "eventid",
 								"type": "uint256"
-							},
-							{
-								"internalType": "int256",
-								"name": "price",
-								"type": "int256"
 							},
 							{
 								"internalType": "bool",
@@ -393,11 +411,11 @@
 	},
 	"sources": {
 		"contracts/Event.sol": {
-			"keccak256": "0x0c195b2e541f15af0f99e16983de26aff22b380d281444bca40f12551caeffb0",
+			"keccak256": "0x7c2e85c99a95adbe419333848bb79fe4019139be2d158c91d41feb84327e1f3b",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://bd3eb7a40110c2e6218aab4ef8f87ba7184f85981e34891a45694cf059e6f8d2",
-				"dweb:/ipfs/QmUQxBmuiAX97uboja6p6NQrnt8QMPJPuByvj3Qheye47W"
+				"bzz-raw://242c57aad30e0e3de5442947e7f068948ad3822dd043034f03daa9689e6a4339",
+				"dweb:/ipfs/QmcKx1bahDkLyLLgih29oAewh9E2xh3oHekoCn5jLFWHXc"
 			]
 		}
 	},

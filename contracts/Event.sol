@@ -26,7 +26,7 @@ contract Event {
         
         uint remaining_tickets;
         
-        int price;
+        uint256 price;
         
         string state;
         
@@ -44,8 +44,6 @@ contract Event {
         uint ticketid;
         
         uint eventid;
-        
-        int price;
         
         bool sell;
         
@@ -75,16 +73,17 @@ contract Event {
     
     event EventCreated(uint indexed eventid, address indexed creator);
     event EventOverrlue(uint indexed eventid, address indexed creator);
+    event EventFinished(uint indexed eventid, address indexed creator);
     event TicketsGenerated(uint indexed eventid, uint indexed totalticket, address indexed creator);
     
     
-    function  create_event(string memory title, string memory  luogo, string memory  date, uint seats, int price, address res) public only_owner {
+    function  create_event(string memory title, string memory  luogo, string memory  date, uint seats, uint256 price, address res) public only_owner {
         {
             events.push(EventData(0, title, luogo,  date, seats, seats, price, "Non concluso" , owner));
             uint id=get_event_length() - 1;
             events[id].id=id;
             emit EventCreated(id, owner);
-            generate_tickets(id, seats, price, res);
+            generate_tickets(id, seats, res);
         }
     }
     
@@ -93,22 +92,27 @@ contract Event {
             emit EventOverrlue(id, owner);
     }
     
+    function finish_event(uint id) public only_owner {
+        events[id].state="Concluso";
+        emit EventFinished(id, owner);
+    }
+    
      function get_events() public view returns (EventData[] memory){
          return events;
      } 
 
 
     
-    function generate_tickets(uint eventid, uint totalticket , int price, address res) internal only_reseller(res) {
+    function generate_tickets(uint eventid, uint totalticket , address res) internal only_reseller(res) {
         for(uint i=0; i < totalticket; i++){
-            tickets.push(TicketData("", "", 0, eventid, price, false, false));
+            tickets.push(TicketData("", "", 0, eventid, false, false));
             uint ticketid=tickets.length - 1;
             tickets[i].ticketid=ticketid;
         }
         emit TicketsGenerated(eventid, totalticket , res);
     }
     
-    function get_event_ticket(uint eventid) external view returns (TicketData memory){
+    function get_event_ticket(uint eventid) internal view returns (TicketData memory){
         TicketData memory biglietto;
         for(uint i=0; i < get_ticket_lenght(); i++){ 
             if(tickets[i].eventid==eventid && tickets[i].sell==false){
@@ -119,6 +123,31 @@ contract Event {
         return biglietto;
     }
     
+    function set_ticket_sold(uint ticketid) internal returns(bool){
+        bool flag=false;
+        for(uint i=0; i < get_ticket_lenght(); i++){
+            if(tickets[i].ticketid==ticketid && tickets[i].sell==false){
+                tickets[i].sell=true;
+                flag=true;
+            }
+            
+        }
+        return flag;
+        
+    }
+    
+    
+    function buy_ticket(uint eventid, address payable customer, string memory name, string memory surname) external payable returns(string memory){
+        require(events[eventid].remaining_tickets > 0, "Non ci sono piu' biglietti dispponibili");
+        require(keccak256(abi.encodePacked(events[eventid].state))==keccak256(abi.encodePacked("Non concluso")), "L'evento e' concluso o annullato");
+        EventData memory evento= events[eventid];
+        // evento.remaining_tickets - 1;
+        require(customer.balance > evento.price, "Fondi non sufficenti");
+            customer.transfer(address(this).balance);
+            TicketData memory biglietto=get_event_ticket(eventid);
+            set_ticket_sold(biglietto.ticketid);
+            return "Biglietto acquistato";
+        }
     /*function set_event_sold(uint ticketid) internal returns (bool){
         bool flag=false;
         for(uint i=0; i < get_ticket_lenght(); i++){
@@ -161,7 +190,7 @@ contract Event {
          return events.length;
      }
      
-     function get_ticket_lenght() internal view returns (uint){
+     function get_ticket_lenght() public view returns (uint){
          return tickets.length;
      }
      
