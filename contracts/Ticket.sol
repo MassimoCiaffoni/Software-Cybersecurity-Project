@@ -6,7 +6,7 @@ import "./Event.sol";
 
 contract Ticket {
     
-    address private owner= msg.sender;
+    address private owner;
     uint256 private balance=owner.balance;
     address public eventAddress;
     string private name;
@@ -15,15 +15,20 @@ contract Ticket {
     
     constructor(address _eventAddress) public {
         eventAddress = _eventAddress;
+        owner=msg.sender;
     }
     
     function get_balance() public view returns (uint256){
         return balance;
     }
     
-    function buy_ticket(uint eventid, address payable indirizzo, string memory nome, string memory cognome) public returns(string memory){
+    function get_address() public view returns(address){
+        return owner;
+    }
+    
+    function buy_ticket(uint eventid, string memory nome, string memory cognome) public returns(string memory, bool){
         Event ev= Event(eventAddress);
-         return ev.buy_ticket(eventid, indirizzo, nome, cognome);
+        return ev.buy_ticket(eventid, payable(owner), nome, cognome);
     }
     
  

@@ -24,11 +24,6 @@
 						"type": "uint256"
 					},
 					{
-						"internalType": "address payable",
-						"name": "indirizzo",
-						"type": "address"
-					},
-					{
 						"internalType": "string",
 						"name": "nome",
 						"type": "string"
@@ -45,6 +40,11 @@
 						"internalType": "string",
 						"name": "",
 						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
 					}
 				],
 				"stateMutability": "nonpayable",
@@ -53,6 +53,19 @@
 			{
 				"inputs": [],
 				"name": "eventAddress",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "get_address",
 				"outputs": [
 					{
 						"internalType": "address",
@@ -105,19 +118,19 @@
 	},
 	"sources": {
 		"contracts/Event.sol": {
-			"keccak256": "0x7c2e85c99a95adbe419333848bb79fe4019139be2d158c91d41feb84327e1f3b",
+			"keccak256": "0x912eaa6166f358f14a927c7a85976bcfcbc1e335c0ce9703a4651a3c36bd31a5",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://242c57aad30e0e3de5442947e7f068948ad3822dd043034f03daa9689e6a4339",
-				"dweb:/ipfs/QmcKx1bahDkLyLLgih29oAewh9E2xh3oHekoCn5jLFWHXc"
+				"bzz-raw://12735dbfc3348370c070af1a417abe12d3ecefb4141084ecfda03e671908ae09",
+				"dweb:/ipfs/QmWcozP3BYf2c9pFT5zTUDfQMtP9oxwTCQuBosDt7HCBhG"
 			]
 		},
 		"contracts/Ticket.sol": {
-			"keccak256": "0x9fdb7b75311e5b8ad2c4eb02e61d5f8106b4a1bf0035028ba1f4bcd133160d2c",
+			"keccak256": "0xe03e4f3d9baea49a0971a021526cda71a507a178c9007ea2425ed207a2305e0c",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://4fdcf6e8248d8ac578193823e2207acafd09c73430ae25738cc4d2161614372a",
-				"dweb:/ipfs/QmXH3aCP5qHv7dUdASeVumwiFB28Zt4tRxjgnvsPnhXqvT"
+				"bzz-raw://6e2b35bde4e81739afb33a8680af33eb14b76b3a8b77eea2ea647e7c4eb2bbdf",
+				"dweb:/ipfs/QmeRErBcbB3TQMNAPgnqS19dK99Dar5HKj45QvaWRtKh38"
 			]
 		}
 	},

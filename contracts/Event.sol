@@ -11,6 +11,8 @@ contract Event {
     
     address private payment_system;
     
+    uint256 private balance= owner.balance;
+    
     
     struct EventData{ //event data structure
     
@@ -137,17 +139,28 @@ contract Event {
     }
     
     
-    function buy_ticket(uint eventid, address payable customer, string memory name, string memory surname) external payable returns(string memory){
-        require(events[eventid].remaining_tickets > 0, "Non ci sono piu' biglietti dispponibili");
-        require(keccak256(abi.encodePacked(events[eventid].state))==keccak256(abi.encodePacked("Non concluso")), "L'evento e' concluso o annullato");
-        EventData memory evento= events[eventid];
-        // evento.remaining_tickets - 1;
-        require(customer.balance > evento.price, "Fondi non sufficenti");
-            customer.transfer(address(this).balance);
+    function buy_ticket(uint eventid, address payable customer, string memory name, string memory surname) external payable returns(string memory, bool){
+        EventData memory evento= get_event(eventid);
+        if(evento.remaining_tickets == 0)
+            return ("Non ci sono piu' biglietti dispponibili", false);
+        else if(keccak256(abi.encodePacked(evento.state))==keccak256(abi.encodePacked("Concluso")) || keccak256(abi.encodePacked(evento.state))==keccak256(abi.encodePacked("Annullato")) )
+            return ("L'evento e' concluso o annullato", false);
+        if(get_balance(customer) < evento.price)
+            return ("Fondi non sufficenti", false);
+        else{
+            customer.transfer(evento.price);
             TicketData memory biglietto=get_event_ticket(eventid);
             set_ticket_sold(biglietto.ticketid);
-            return "Biglietto acquistato";
+            biglietto.name = name;
+            biglietto.surname= surname;
+            reduce_remaining_tickets(eventid);
+            return ("Biglietto acquistato", true);
         }
+    }
+    
+    function reduce_remaining_tickets(uint eventid) internal{
+        events[eventid].remaining_tickets --;
+    }
     /*function set_event_sold(uint ticketid) internal returns (bool){
         bool flag=false;
         for(uint i=0; i < get_ticket_lenght(); i++){
@@ -190,13 +203,17 @@ contract Event {
          return events.length;
      }
      
-     function get_ticket_lenght() public view returns (uint){
+     function get_ticket_lenght() internal view returns (uint){
          return tickets.length;
      }
      
      function set_reseller(address r) only_owner public{
          reseller=r;
      }
+     
+     function get_balance(address indir) public only_owner view returns (uint256) {
+        return indir.balance;
+    }
 
     
 }  

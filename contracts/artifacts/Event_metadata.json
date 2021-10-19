@@ -116,6 +116,11 @@
 						"internalType": "string",
 						"name": "",
 						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
 					}
 				],
 				"stateMutability": "payable",
@@ -170,6 +175,25 @@
 				"name": "finish_event",
 				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "indir",
+						"type": "address"
+					}
+				],
+				"name": "get_balance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -300,19 +324,6 @@
 			},
 			{
 				"inputs": [],
-				"name": "get_ticket_lenght",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
 				"name": "get_tickets",
 				"outputs": [
 					{
@@ -411,11 +422,11 @@
 	},
 	"sources": {
 		"contracts/Event.sol": {
-			"keccak256": "0x7c2e85c99a95adbe419333848bb79fe4019139be2d158c91d41feb84327e1f3b",
+			"keccak256": "0x912eaa6166f358f14a927c7a85976bcfcbc1e335c0ce9703a4651a3c36bd31a5",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://242c57aad30e0e3de5442947e7f068948ad3822dd043034f03daa9689e6a4339",
-				"dweb:/ipfs/QmcKx1bahDkLyLLgih29oAewh9E2xh3oHekoCn5jLFWHXc"
+				"bzz-raw://12735dbfc3348370c070af1a417abe12d3ecefb4141084ecfda03e671908ae09",
+				"dweb:/ipfs/QmWcozP3BYf2c9pFT5zTUDfQMtP9oxwTCQuBosDt7HCBhG"
 			]
 		}
 	},
