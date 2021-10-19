@@ -3,7 +3,7 @@ module.exports = {
   networks: {
     development: {
       host: "localhost",
-      port: 7545,
+      port: 8545,
       network_id: "*" // Match any network id
     },
     gui: {
@@ -12,9 +12,11 @@ module.exports = {
       network_id: "*" // Match any network id
     }
   },
+
   compilers: {
     solc: {
       version: "^0.8.0"
     }
   }
+};
 };
