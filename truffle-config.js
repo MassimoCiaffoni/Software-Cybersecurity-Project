@@ -4,11 +4,11 @@ module.exports = {
     development: {
       host: "localhost",
       port: 7545,
-      network_id: "*" // Match any network id
+      network_id: "*", // Match any network id
     },
     gui: {
       host: "localhost",
-      port: 7545,
+      port: 3000,
       network_id: "*" // Match any network id
     }
   },
@@ -18,5 +18,4 @@ module.exports = {
       version: "^0.8.0"
     }
   }
-};
 };

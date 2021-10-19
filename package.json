@@ -1,0 +1,24 @@
+{
+  "name": "software-cybersecurity-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "scripts": {
+    "dev": "lite-server",
+    "test": "run "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MassimoCiaffoni/Software-Cybersecurity-Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MassimoCiaffoni/Software-Cybersecurity-Project/issues"
+  },
+  "homepage": "https://github.com/MassimoCiaffoni/Software-Cybersecurity-Project#readme",
+  "dependencies": {
+    "lite-server": "^2.6.1",
+    "web3": "^1.6.0"
+  }
+}

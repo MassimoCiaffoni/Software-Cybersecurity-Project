@@ -79,13 +79,14 @@ contract Event {
     event TicketsGenerated(uint indexed eventid, uint indexed totalticket, address indexed creator);
     
     
-    function  create_event(string memory title, string memory  luogo, string memory  date, uint seats, uint256 price, address res) public only_owner {
+    function  create_event(string memory title, string memory  luogo, string memory  date, uint seats, uint256 price, address res) public only_owner returns(uint) {
         {
             events.push(EventData(0, title, luogo,  date, seats, seats, price, "Non concluso" , owner));
             uint id=get_event_length() - 1;
             events[id].id=id;
             emit EventCreated(id, owner);
             generate_tickets(id, seats, res);
+            return id;
         }
     }
     
@@ -105,13 +106,16 @@ contract Event {
 
 
     
-    function generate_tickets(uint eventid, uint totalticket , address res) internal only_reseller(res) {
-        for(uint i=0; i < totalticket; i++){
+    function generate_tickets(uint eventid, uint totalticket , address res) internal only_reseller(res) returns(uint){
+        uint ticketid=0;
+        uint array_len=get_ticket_lenght()+totalticket;
+        for(uint i=get_ticket_lenght(); i < array_len  ; i++){
             tickets.push(TicketData("", "", 0, eventid, false, false));
-            uint ticketid=tickets.length - 1;
+            ticketid=get_ticket_lenght() - 1;
             tickets[i].ticketid=ticketid;
         }
         emit TicketsGenerated(eventid, totalticket , res);
+        return totalticket;
     }
     
     function get_event_ticket(uint eventid) internal view returns (TicketData memory){

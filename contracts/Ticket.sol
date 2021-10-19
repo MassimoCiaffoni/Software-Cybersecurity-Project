@@ -13,7 +13,7 @@ contract Ticket {
     string private surname;
     
     
-    constructor(address _eventAddress) public {
+    constructor(address _eventAddress) {
         eventAddress = _eventAddress;
         owner=msg.sender;
     }

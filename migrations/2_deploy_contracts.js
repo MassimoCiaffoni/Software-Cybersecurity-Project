@@ -8,7 +8,7 @@ module.exports = function(deployer) {
         const eventInstance = await Event.deployed();
         const ticketInstance = await Ticket.deployed();
 
-        console.log('Event address is ', eventInstance.address);
+        console.log('Event contract address is ', eventInstance.address);
       });
   });
 };
