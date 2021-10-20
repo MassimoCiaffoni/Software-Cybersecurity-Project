@@ -153,7 +153,7 @@ contract Event {
             return true;
     }
     
-    function buy_ticket(uint eventid, string memory name, string memory surname, address customer) external returns(string memory, bool, address){
+    function buy_ticket( address customer, uint eventid, string memory name, string memory surname) external returns(string memory, bool, address){
         TicketData memory biglietto=get_event_ticket(eventid);
         set_ticket_sold(biglietto.ticketid, name, surname);
         reduce_remaining_tickets(eventid);
@@ -166,7 +166,7 @@ contract Event {
     }
 
 
-    function validate_ticket(uint ticketid, address val) external only_validator(val)returns(string memory){
+    function validate_ticket(uint ticketid, address val) external only_validator(val)returns(string memory, address){
         bool flag=false;
         for(uint i=0; i < get_ticket_lenght(); i++){
             if(tickets[i].ticketid==ticketid && tickets[i].validate==false && tickets[i].sell==true){
@@ -175,9 +175,9 @@ contract Event {
             }
         }
         if(flag)
-            return("Biglietto valido");
+            return("Biglietto valido", val);
         else
-            return("Biglitto gia' validato o non validabile");
+            return("Biglitto gia' validato o non validabile", val);
 
    }
     /*function set_event_sold(uint ticketid) internal returns (bool){
