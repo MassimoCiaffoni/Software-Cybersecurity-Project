@@ -18,7 +18,7 @@ contract('Event', function (accounts) {
 
         // Call createEvent normally, where we can't get return value, but the state
         // is saved to the blockchain
-        await eventInstance.create_event('Concerto', 'Ancona', '22/02/2021', 5, 2000, "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4");
+        await eventInstance.create_event('Concerto', 'Ancona', '22/02/2021', 5, 80, "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4");
         const newEvent = await eventInstance.get_events.call();
         console.log(newEvent);
 
@@ -29,7 +29,7 @@ contract('Event', function (accounts) {
 
     it('ticket are generated', async function () {
 
-        await eventInstance.create_event('Prova', 'Ancona', '21/09/2021', 5, 2000, "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4");
+        await eventInstance.create_event('Prova', 'Ancona', '21/09/2021', 5, 80, "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4");
         const newTickets = await eventInstance.get_tickets.call();
         const newEvent = await eventInstance.get_events.call();
         console.log(newEvent)
@@ -42,7 +42,36 @@ contract('Event', function (accounts) {
         assert.equal(eventAddress, eventInstance.address);
     });
 
+    it('ticket is bought', async function() {
 
+        const balancecustomer= await ticketInstance.get_balance.call();
+        const balanceevent= await eventInstance.get_balance.call();
+        console.log("Il balance dell' event manager è", balanceevent.toNumber())
+        console.log('Il balance del customer è', balancecustomer.toNumber());
+        const prova= await ticketInstance.buy_ticket.call(0, 'Massimo', 'Ciaffoni')
+        console.log(prova);
+        const ticketsold= await eventInstance.get_tickets.call();
+        assert.equal(ticketsold[0].sell, true)
+    });
+
+
+    it('event is set finished', async function() {
+
+        await eventInstance.finish_event(0)
+        const newEvent = await eventInstance.get_events.call()
+        assert.equal(newEvent[0].state, 'Concluso')
+    });
+
+
+    it('event is set overlue', async function() {
+
+        await eventInstance.overrlue_event(0)
+        const newEvent = await eventInstance.get_events.call()
+        assert.equal(newEvent[0].state, 'Annullato')
+    });
+
+
+    
 
     /*it('has an owner', async function(){
         const owner= await eventInstance.owner;

@@ -149,16 +149,20 @@ contract Event {
             return ("Non ci sono piu' biglietti dispponibili", false);
         else if(keccak256(abi.encodePacked(evento.state))==keccak256(abi.encodePacked("Concluso")) || keccak256(abi.encodePacked(evento.state))==keccak256(abi.encodePacked("Annullato")) )
             return ("L'evento e' concluso o annullato", false);
-        if(get_balance(customer) < evento.price)
-            return ("Fondi non sufficenti", false);
         else{
-            customer.transfer(evento.price);
-            TicketData memory biglietto=get_event_ticket(eventid);
-            set_ticket_sold(biglietto.ticketid);
-            biglietto.name = name;
-            biglietto.surname= surname;
-            reduce_remaining_tickets(eventid);
-            return ("Biglietto acquistato", true);
+            bool flag=customer.send(evento.price);
+            if(flag){
+                TicketData memory biglietto=get_event_ticket(eventid);
+                set_ticket_sold(biglietto.ticketid);
+                biglietto.name = name;
+                biglietto.surname= surname;
+                reduce_remaining_tickets(eventid);
+                return ("Biglietto acquistato", flag);
+            }
+
+            else{
+                return("Fondi non sufficenti", false);
+            }
         }
     }
     
@@ -215,8 +219,8 @@ contract Event {
          reseller=r;
      }
      
-     function get_balance(address indir) public only_owner view returns (uint256) {
-        return indir.balance;
+     function get_balance() public view returns (uint256){
+        return owner.balance;
     }
 
     
