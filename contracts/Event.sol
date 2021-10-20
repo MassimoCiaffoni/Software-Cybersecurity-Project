@@ -7,11 +7,9 @@ contract Event {
     
     address private owner=msg.sender;
     
-    address private reseller=0x5B38Da6a701c568545dCfcB03FcB875f56beddC4;
+    address public reseller;
     
-    address private payment_system;
-    
-    uint256 private balance= owner.balance;
+    address private validator;
     
     
     struct EventData{ //event data structure
@@ -67,8 +65,8 @@ contract Event {
         _;
     }
     
-    modifier only_payment(address pay) {
-        require(pay == payment_system, "Non sei autorizzato ad eseguire questa azione");
+    modifier only_validator(address val) {
+        require(val == validator, "Non sei il validator");
         _;
     }
 
@@ -77,6 +75,7 @@ contract Event {
     event EventOverrlue(uint indexed eventid, address indexed creator);
     event EventFinished(uint indexed eventid, address indexed creator);
     event TicketsGenerated(uint indexed eventid, uint indexed totalticket, address indexed creator);
+    event TicketSold(uint indexed eventid, uint ticketid, address indexed customer);
     
     
     function  create_event(string memory title, string memory  luogo, string memory  date, uint seats, uint256 price, address res) public only_owner returns(uint) {
@@ -129,11 +128,13 @@ contract Event {
         return biglietto;
     }
     
-    function set_ticket_sold(uint ticketid) internal returns(bool){
+    function set_ticket_sold(uint ticketid, string memory name, string memory surname) internal returns(bool){
         bool flag=false;
         for(uint i=0; i < get_ticket_lenght(); i++){
             if(tickets[i].ticketid==ticketid && tickets[i].sell==false){
                 tickets[i].sell=true;
+                tickets[i].name=name;
+                tickets[i].surname=surname;
                 flag=true;
             }
             
@@ -142,33 +143,43 @@ contract Event {
         
     }
     
-    
-    function buy_ticket(uint eventid, address payable customer, string memory name, string memory surname) external payable returns(string memory, bool){
+    function check_ticket(uint eventid) external view returns(bool){
         EventData memory evento= get_event(eventid);
         if(evento.remaining_tickets == 0)
-            return ("Non ci sono piu' biglietti dispponibili", false);
+            return false;
         else if(keccak256(abi.encodePacked(evento.state))==keccak256(abi.encodePacked("Concluso")) || keccak256(abi.encodePacked(evento.state))==keccak256(abi.encodePacked("Annullato")) )
-            return ("L'evento e' concluso o annullato", false);
-        else{
-            bool flag=customer.send(evento.price);
-            if(flag){
-                TicketData memory biglietto=get_event_ticket(eventid);
-                set_ticket_sold(biglietto.ticketid);
-                biglietto.name = name;
-                biglietto.surname= surname;
-                reduce_remaining_tickets(eventid);
-                return ("Biglietto acquistato", flag);
-            }
-
-            else{
-                return("Fondi non sufficenti", false);
-            }
-        }
+            return false;
+        else 
+            return true;
+    }
+    
+    function buy_ticket(uint eventid, string memory name, string memory surname, address customer) external returns(string memory, bool, address){
+        TicketData memory biglietto=get_event_ticket(eventid);
+        set_ticket_sold(biglietto.ticketid, name, surname);
+        reduce_remaining_tickets(eventid);
+        emit TicketSold(eventid, biglietto.ticketid, customer);
+        return ("Biglietto acquistato", true , customer);      
     }
     
     function reduce_remaining_tickets(uint eventid) internal{
         events[eventid].remaining_tickets --;
     }
+
+
+    function validate_ticket(uint ticketid, address val) external only_validator(val)returns(string memory){
+        bool flag=false;
+        for(uint i=0; i < get_ticket_lenght(); i++){
+            if(tickets[i].ticketid==ticketid && tickets[i].validate==false && tickets[i].sell==true){
+                tickets[i].validate=true;
+                flag=true;
+            }
+        }
+        if(flag)
+            return("Biglietto valido");
+        else
+            return("Biglitto gia' validato o non validabile");
+
+   }
     /*function set_event_sold(uint ticketid) internal returns (bool){
         bool flag=false;
         for(uint i=0; i < get_ticket_lenght(); i++){
@@ -184,7 +195,12 @@ contract Event {
     function get_tickets() public only_owner view returns(TicketData[] memory){
         return tickets;
     }
+
     
+
+    function get_event_price(uint eventid) public view returns(uint) {
+        return events[eventid].price;
+    }
     /*function delete_event_list(uint id) public only_owner {
         bool deletable=false;
         string memory an="Annullato";
@@ -215,12 +231,22 @@ contract Event {
          return tickets.length;
      }
      
-     function set_reseller(address r) only_owner public{
+     function set_reseller(address r) only_owner public returns(string memory, address){
          reseller=r;
+         return("Reseller impostato", reseller);
+     }
+
+     function set_validator(address v) only_owner public returns(string memory, address){
+         validator=v;
+         return("Validator impostato", validator);
      }
      
      function get_balance() public view returns (uint256){
         return owner.balance;
+    }
+
+    function get_address() public view returns(address){
+        return owner;
     }
 
     
