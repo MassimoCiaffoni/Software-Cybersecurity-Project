@@ -1,48 +1,80 @@
 import React, { Component } from 'react'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import ReactNotification from 'react-notifications-component';
 import Web3 from 'web3'
 
-import Event from "contracts/Event.json";
-import Ticket from "contracts/Ticket.json";
+import CreateEvent from './components/CreateEvent';
 
 class App extends Component {
-  componentWillMount() {
-    this.loadBlockchainData()
-  
+  constructor() {
+    super();
+
+    this.state = { account: '',
+    balance: ''}
+
+    new Promise((resolve, reject) => {
+      if (typeof window.ethereum !== 'undefined') {
+        const web3 = new Web3(window.ethereum);
+        window.ethereum.enable()
+          .then(() => {
+            resolve(
+              new Web3(window.ethereum)
+            );
+          })
+          .catch(e => {
+            reject(e);
+          });
+        return;
+      }
+      if (typeof window.web3 !== 'undefined') {
+        return resolve(
+          new Web3(window.web3.currentProvider)
+        );
+      }
+      resolve(new Web3('http://127.0.0.1:7545'));
+    });
+
+    window.ethereum.on('accountsChanged', function () {
+      window.location.reload();
+    });
   }
 
-  async loadBlockchainData() {
-    const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
-    const accounts = await web3.eth.getAccounts()
-    this.setState({ account: accounts[3] }) 
 
-    const id = await web3.eth.net.getId();
-   
-    const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
-    const ticketInstance = new web3.eth.Contract(Event.abi,Ticket.networks[id].address);
-    
-    console.log(eventInstance);
-    console.log(ticketInstance);
-    await eventInstance.methods.set_reseller(accounts[3]);
-    const newEventID = await eventInstance.methods.create_event('Concerto', 'Ancona', '22/02/2021', 5, 2000, accounts[3]).send({from:accounts[0]});
-    console.log(newEventID);
-  }
+render() {
+  return (
+    <Router>
 
-  
 
-  constructor(props) {
-    super(props)
-    this.state = { account: '' }
-  }
-
-  render() {
-    return (
-      <div className="container">
-        <h1>Hello, World!</h1>
-        <p>Your account: {this.state.account}</p>
-        <p>Your account: {this.newEventID.eventInstance}</p>
+      <div >
+        <ReactNotification />
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <ul class="navbar-nav">
+        {/*<li class="nav-item active">
+        <a class="nav-link" href="#">User</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="#"><Link to="/getevents">Event</Link></a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="buyticket.html"><Link to="/buyTickets">Ticket</Link></a>
+        </li>*/}
+        <li class="nav-item">
+        <a class="nav-link" href="#"><Link to="/event">Create Event</Link></a>
+        </li>
+        {/*<li class="nav-item">
+        <a class="nav-link" href="#"><Link to="/tickets">My ticket</Link></a>
+        </li>*/}
+       </ul>
+       </nav>
+        <Switch>
+          <Route path="/event" component={CreateEvent} />
+        </Switch>
       </div>
-    );
-  }
+
+    </Router >
+    
+  );
+}
 }
 
 export default App;

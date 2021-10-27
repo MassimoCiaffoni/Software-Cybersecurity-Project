@@ -18,8 +18,8 @@ contract('Event Ticketing', accounts=> {
     it('set reseller', async function () {
         const reseller=await eventInstance.set_reseller.call(accounts[3], {from: eventmanager});
         console.log(reseller)
-        const res=await eventInstance.set_reseller(accounts[3], {from: eventmanager});
-        assert(res[1], accounts[3]);
+        await eventInstance.set_reseller(accounts[3], {from: eventmanager});
+        assert(reseller[1], accounts[3]);
     });
 
     it('can create a new event', async function () {
