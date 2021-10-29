@@ -5,6 +5,7 @@ import Web3 from 'web3'
 
 import CreateEvent from './components/CreateEvent.jsx';
 import GetEvent from './components/GetEvent.jsx';
+import './App.css'
 
 class App extends Component {
   constructor() {
@@ -53,30 +54,23 @@ render() {
     <Router>
 
 
-      <div >
-        <ReactNotification />
-        <nav className="navbar navbar-expand-sm bg-light navbar-light">
-        <ul className="navbar-nav">
-        <li className="nav-item" align="left">Account:{this.state.account}</li>
-        <li className="nav-item">
-        <a className="nav-link" href="#"><Link to="/getevents">Event</Link></a>
-        </li>
-        {/*<li class="nav-item">
-        <a class="nav-link" href="buyticket.html"><Link to="/buyTickets">Ticket</Link></a>
-        </li>*/}
-        <li className="nav-item" align="center">
-        <Link to="/event">Create Event</Link>
-        </li>
-        {/*<li class="nav-item">
-        <a class="nav-link" href="#"><Link to="/tickets">My ticket</Link></a>
-        </li>*/}
-       </ul>
-       </nav>
-        <Switch>
-          <Route path="/event" component={CreateEvent} />
-          <Route path="/getevents" component={GetEvent} />
 
-        </Switch>
+      <div >
+      <ReactNotification />
+      <div className="App">
+                <header>
+                    <div className="container">
+                    <div className="address">Address: &ensp;<span>{this.state.account}</span></div>
+                        <Link to='/getevent' activeClassName="is-active">Event</Link>
+                        <Link activeClassName='is-active' to="/event">Create Event</Link>
+                    </div>
+                </header>
+      </div>
+      <Switch>
+        <Route path="/event" component={CreateEvent} />
+        <Route path="/getevent" component={GetEvent} />
+
+      </Switch>
       </div>
 
     </Router >
