@@ -36,16 +36,18 @@ class CreateEvent extends Component {
     const id = await web3.eth.net.getId();
     const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address); 
     const event_organizer = await web3.eth.getAccounts();
+    console.log(event_organizer);
     var { title, luogo, date, seats, price } = this.state;
 
     try {    
-
+      console.log("event organizer:" + event_organizer)
       await eventInstance.methods
-      .create_event(title,luogo,date,seats,price,'0x41e7d966169DCFe5DEB6427bab5D0435622E9f94','0x5528D8697cCB99822c3fe5c815912B5d16A5902f')
+      .create_event(title,luogo,date,seats,price, event_organizer[0],'0x5528D8697cCB99822c3fe5c815912B5d16A5902f')
       .send({ from: event_organizer[0]})
       .then((receipt) => {
         console.log(receipt);
       });
+      
       
       // notifica di successo
       renderNotification('success', 'Successo', `Evento creato correttamente!`);
@@ -55,6 +57,7 @@ class CreateEvent extends Component {
       this.setState({ buttonEnabled: true});
       
     }catch(err){
+      console.log(err);
       if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
         renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
       } else {

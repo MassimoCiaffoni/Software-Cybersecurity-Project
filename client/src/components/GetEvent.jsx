@@ -36,7 +36,7 @@ class GetEvent extends Component {
         console.log(result);
         this.setState({ event_list: result });  
       });    
-    
+      
     }catch(e){
       console.log("Error while updating the events:"+e);
     }
