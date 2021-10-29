@@ -1,0 +1,19 @@
+footer {
+    background: #0088e2;
+    color: white;
+    line-height: 50px;
+    position: fixed;
+    padding: 10px 10px 0px 10px;
+    bottom: 0;
+    width: 100%;
+    /* Height of the footer*/ 
+    height: 65px;
+    margin-top: 100px;
+  }
+
+  .text-left {
+    text-align: left;
+    padding: 20px 20px 20px 20px;
+  }
+
+  
