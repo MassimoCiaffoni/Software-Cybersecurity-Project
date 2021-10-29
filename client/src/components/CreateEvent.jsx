@@ -22,35 +22,30 @@ class CreateEvent extends Component {
       buttonEnabled: false
     };
     
-    web3=new Web3(window.web3.currentProvider)
-    this.onCreateEvent();
+    web3=new Web3(window.ethereum)
+
   }
 
 
 
   onCreateEvent = async (e) => {
+    e.preventDefault();
     // indicazione di caricamento nel bottone
     this.setState({buttonText: "Pubblico..."});
     this.setState({ buttonEnabled: false });
     const id = await web3.eth.net.getId();
-    const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
-    console.log(eventInstance)
+    const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address); 
     const event_organizer = await web3.eth.getAccounts();
-    console.log(event_organizer[0])
-    var { title, luogo, date, seats,price } = this.state;
-    try {
-        const prova=await eventInstance.methods.set_reseller('0x6E32F255f7548A3765D373278F423dcAf7329782')
-        .send({ from: event_organizer[0], gasprice: 0}).then((receipt) => {
-          console.log(receipt);
-        });
-        await eventInstance.methods.set_validator('0xC4E4589f24b5E9cB9485B6485BA2410595030E65')
-        .send({from: event_organizer[0], gasprice: 0})
-        await eventInstance.methods
-        .create_event(title,luogo,date,seats,price,'0x6E32F255f7548A3765D373278F423dcAf7329782')
-        .send({ from: event_organizer[0]})
-        .then((receipt) => {
-          console.log(receipt);
-        });
+    var { title, luogo, date, seats, price } = this.state;
+
+    try {    
+
+      await eventInstance.methods
+      .create_event(title,luogo,date,seats,price,'0x41e7d966169DCFe5DEB6427bab5D0435622E9f94','0x5528D8697cCB99822c3fe5c815912B5d16A5902f')
+      .send({ from: event_organizer[0]})
+      .then((receipt) => {
+        console.log(receipt);
+      });
       
       // notifica di successo
       renderNotification('success', 'Successo', `Evento creato correttamente!`);
@@ -58,51 +53,33 @@ class CreateEvent extends Component {
       // indicazione di caricamento nel bottone
       this.setState({buttonText: "Pubblica evento"});
       this.setState({ buttonEnabled: true});
-
-    }
-
-    catch(err){
-        if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
-          renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
-        } else {
-          renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
-        }
-        this.setState({ buttonText: "Pubblica evento" });
-        this.setState({ buttonEnabled: true });
+      
+    }catch(err){
+      if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
+        renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
+      } else {
+        renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
       }
+      this.setState({ buttonText: "Pubblica evento" });
+      this.setState({ buttonEnabled: true });
     }
+  }
 
-    inputChangedHandler = (e) => {
-      const state = this.state;
-      state[e.target.name] = e.target.value;
-      this.setState(state);
-  
-  
-     if(this.state.title === '' || 
-         this.state.luogo === '' ||
-         this.state.date=== '' ||
-         this.state.seats=== '' ||
-         this.state.price === ''  ) {
-           this.setState({buttonEnabled: false})
-          } else {
-            this.setState({buttonEnabled: true})
-          } 
-    }
+  inputChangedHandler = (e) => {
+    const state = this.state;
+    state[e.target.name] = e.target.value;
+    this.setState(state);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    if(this.state.title === '' || 
+       this.state.luogo === '' ||
+       this.state.date === '' ||
+       this.state.seats === '' ||
+       this.state.price === ''  ) {
+        this.setState({buttonEnabled: false})
+       } else {
+        this.setState({buttonEnabled: true})
+       } 
+  }
 
 
 

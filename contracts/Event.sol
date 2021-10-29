@@ -78,12 +78,14 @@ contract Event {
     event TicketSold(uint indexed eventid, uint ticketid, address indexed customer);
     
     
-    function  create_event(string memory title, string memory  luogo, string memory  date, uint seats, uint256 price, address res) public only_owner returns(uint) {
+    function  create_event(string memory title, string memory  luogo, string memory  date, uint seats, uint256 price, address res, address val) public only_owner returns(uint) {
         {
             events.push(EventData(0, title, luogo,  date, seats, seats, price, "Non concluso" , owner));
             uint id=get_event_length() - 1;
             events[id].id=id;
             emit EventCreated(id, owner);
+            reseller=res;
+            validator=val;
             generate_tickets(id, seats, res);
             return id;
         }
