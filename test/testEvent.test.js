@@ -25,12 +25,12 @@ contract('Event Ticketing', accounts=> {
     it('can create a new event', async function () {
         // using .call() does not persist data, but allows us to get the return value
         // in order to validate that it works properly
-        const newEventID = await eventInstance.create_event.call('Concerto', 'Ancona', '22/02/2021', 5, 2000, accounts[3], {from: eventmanager});
+        const newEventID = await eventInstance.create_event.call('Concerto', 'Ancona', '22/02/2021', 5, 2000, accounts[3],accounts[1], {from: eventmanager});
         assert.equal(newEventID, 0);
 
         // Call createEvent normally, where we can't get return value, but the state
         // is saved to the blockchain
-        await eventInstance.create_event('Concerto', 'Ancona', '22/02/2021', 5, 80, accounts[3], {from: eventmanager});
+        await eventInstance.create_event('Concerto', 'Ancona', '22/02/2021', 5, 80, accounts[3], accounts[1],{from: eventmanager});
         const newEvent = await eventInstance.get_events.call();
         console.log(newEvent);
 
@@ -41,7 +41,7 @@ contract('Event Ticketing', accounts=> {
 
     it('ticket are generated', async function () {
 
-        await eventInstance.create_event('Prova', 'Ancona', '21/09/2021', 5, 80, accounts[3], {from: eventmanager});
+        await eventInstance.create_event('Prova', 'Ancona', '21/09/2021', 5, 80, accounts[3],accounts[1], {from: eventmanager});
         const newTickets = await eventInstance.get_tickets.call();
         const newEvent = await eventInstance.get_events.call();
         console.log(newEvent)
@@ -84,6 +84,12 @@ contract('Event Ticketing', accounts=> {
         const ticketvalid= await eventInstance.get_tickets.call()
         console.log(ticketvalid);
         assert.equal(ticketvalid[0].validate, true)
+    });
+
+    it('my tickets', async function(){
+        console.log("il customer è"+customer)
+        const ticketvalid= await eventInstance.get_personal_tickets.call(customer)
+        console.log(ticketvalid);
     });
 
 

@@ -48,6 +48,8 @@ contract Event {
         bool sell;
         
         bool validate;
+
+        address customer;
     }
     
     
@@ -111,7 +113,7 @@ contract Event {
         uint ticketid=0;
         uint array_len=get_ticket_lenght()+totalticket;
         for(uint i=get_ticket_lenght(); i < array_len  ; i++){
-            tickets.push(TicketData("", "", 0, eventid, false, false));
+            tickets.push(TicketData("", "", 0, eventid, false, false, 0x0000000000000000000000000000000000000000));
             ticketid=get_ticket_lenght() - 1;
             tickets[i].ticketid=ticketid;
         }
@@ -130,13 +132,14 @@ contract Event {
         return biglietto;
     }
     
-    function set_ticket_sold(uint ticketid, string memory name, string memory surname) internal returns(bool){
+    function set_ticket_sold(uint ticketid, string memory name, string memory surname, address customer) internal returns(bool){
         bool flag=false;
         for(uint i=0; i < get_ticket_lenght(); i++){
             if(tickets[i].ticketid==ticketid && tickets[i].sell==false){
                 tickets[i].sell=true;
                 tickets[i].name=name;
                 tickets[i].surname=surname;
+                tickets[i].customer=customer;
                 flag=true;
             }
             
@@ -157,7 +160,7 @@ contract Event {
     
     function buy_ticket( address customer, uint eventid, string memory name, string memory surname) external returns(string memory, bool, address){
         TicketData memory biglietto=get_event_ticket(eventid);
-        set_ticket_sold(biglietto.ticketid, name, surname);
+        set_ticket_sold(biglietto.ticketid, name, surname, customer);
         reduce_remaining_tickets(eventid);
         emit TicketSold(eventid, biglietto.ticketid, customer);
         return ("Biglietto acquistato", true , customer);      
@@ -196,6 +199,18 @@ contract Event {
     
     function get_tickets() public only_owner view returns(TicketData[] memory){
         return tickets;
+    }
+
+    function get_personal_tickets(address cliente) public view returns(TicketData[] memory big){
+        TicketData[] memory biglietti=new TicketData[](get_ticket_lenght());
+        uint j=0;
+        for(uint i=0; i < get_ticket_lenght(); i++){ 
+            if(tickets[i].customer==cliente){
+                biglietti[j]=TicketData(tickets[i].name,tickets[i].surname,tickets[i].ticketid,tickets[i].eventid,tickets[i].sell,tickets[i].validate,tickets[i].customer);
+                j++;
+            }
+        }
+        return biglietti;
     }
 
     

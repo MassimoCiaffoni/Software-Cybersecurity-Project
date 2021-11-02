@@ -5,6 +5,7 @@ import Web3 from 'web3'
 
 import CreateEvent from './components/CreateEvent.jsx';
 import GetEvent from './components/GetEvent.jsx';
+import GetTickets from './components/GetTickets.jsx';
 import './App.css'
 import InsertUserData from './components/InsertUserData.jsx';
 
@@ -64,6 +65,7 @@ render() {
                     <div className="address">Address: &ensp;<span>{this.state.account}</span></div>
                         <Link to='/getevent' activeClassName="is-active">Event</Link>
                         <Link activeClassName='is-active' to="/event">Create Event</Link>
+                        <Link activeClassName='is-active' to="/tickets">My Tickets</Link>
                     </div>
                 </header>
       </div>
@@ -71,6 +73,8 @@ render() {
         <Route path="/event" component={CreateEvent} />
         <Route path="/getevent" component={GetEvent} />
         <Route path="/buy-ticket" component={InsertUserData} />
+        <Route path="/tickets" component={GetTickets} />
+
       </Switch>
       </div>
 
