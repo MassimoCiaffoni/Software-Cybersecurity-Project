@@ -56,7 +56,6 @@ contract Event {
     
     EventData[] private events; //all events
     TicketData[] private tickets; //all tickets
-    mapping(address => TicketData[]) public _purchased_tickets;
     
     modifier only_owner() {
         require(msg.sender == owner, "Non sei autorizzato ad eseguire questa azione");
@@ -202,8 +201,16 @@ contract Event {
         return tickets;
     }
 
-    function get_personal_tickets(address customer) public view returns(TicketData[] memory big){
-        return _purchased_tickets[customer];
+    function get_personal_tickets(address cliente) public view returns(TicketData[] memory big){
+        TicketData[] memory biglietti=new TicketData[](get_ticket_lenght());
+        uint j=0;
+        for(uint i=0; i < get_ticket_lenght(); i++){ 
+            if(tickets[i].customer==cliente){
+                biglietti[j]=TicketData(tickets[i].name,tickets[i].surname,tickets[i].ticketid,tickets[i].eventid,tickets[i].sell,tickets[i].validate,tickets[i].customer);
+                j++;
+            }
+        }
+        return biglietti;
     }
 
     
