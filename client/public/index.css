@@ -21,3 +21,7 @@ footer {
     padding: 20px 20px 20px 20px;
   }
   
+  .button-center {
+    text-align: center;  
+    padding: 5px 5px 5px 5px; 
+  }

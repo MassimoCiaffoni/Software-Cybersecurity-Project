@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
 import Event from "contracts/Event.json";
-
+import Button from 'react-bootstrap/Button'
 
 let web3;
 
 class GetEvent extends Component {
+    
   constructor() {
     super();
     
@@ -17,7 +18,7 @@ class GetEvent extends Component {
     };
     
     web3=new Web3(window.ethereum)
-
+   
   }
 
   async componentDidMount() {
@@ -42,6 +43,13 @@ class GetEvent extends Component {
     }
   }
 
+  onBuyTicket = async (e) => {
+    //renderNotification('success', 'Successo', `Click pulsante!`+e.target.value);
+    
+    this.props.history.push({pathname: '/buy-ticket', state: e.target.value});
+  }
+
+
   render() {
     return (
     <div className="container">
@@ -58,6 +66,7 @@ class GetEvent extends Component {
                   <th>Price</th>
                   <th>State</th>
                   <th>Owner</th>
+                  <th>Tickets</th>
               </tr>
           </thead>
           <tbody>
@@ -72,6 +81,7 @@ class GetEvent extends Component {
                       <td>{event.price}</td>
                       <td>{event.state}</td>
                       <td>{event.owner}</td>
+                      <div class="button-center"><Button variant="primary" type="button" onClick={this.onBuyTicket} value={event.id}>Buy ticket</Button>{' '}</div>
                   </tr>
               )}
           </tbody>

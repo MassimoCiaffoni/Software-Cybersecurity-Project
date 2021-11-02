@@ -6,6 +6,7 @@ import Web3 from 'web3'
 import CreateEvent from './components/CreateEvent.jsx';
 import GetEvent from './components/GetEvent.jsx';
 import './App.css'
+import InsertUserData from './components/InsertUserData.jsx';
 
 class App extends Component {
   constructor() {
@@ -69,7 +70,7 @@ render() {
       <Switch>
         <Route path="/event" component={CreateEvent} />
         <Route path="/getevent" component={GetEvent} />
-
+        <Route path="/buy-ticket" component={InsertUserData} />
       </Switch>
       </div>
 
