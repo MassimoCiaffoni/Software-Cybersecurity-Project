@@ -2312,11 +2312,15 @@
       "events": {},
       "links": {},
       "address": "0x015e2d52B0D3a043B140c5502Be3D9d93E37C533",
-      "transactionHash": "0xdc519c1d7c9c5c1c541e646b87cb8865813f6468915fa607d87e22955064b402"
+      "transactionHash": "0x44a43ec7292730e8e440a0f271850413a0d86f9294a40e498066adfdf3fe02c9"
     }
   },
   "schemaVersion": "3.4.3",
+<<<<<<< HEAD
   "updatedAt": "2021-11-03T14:37:55.896Z",
+=======
+  "updatedAt": "2021-11-03T17:06:46.177Z",
+>>>>>>> 351dd42ade419ae726fcd99b60e59a6dc8f53f07
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

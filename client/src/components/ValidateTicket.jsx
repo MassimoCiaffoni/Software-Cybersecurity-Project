@@ -38,7 +38,8 @@ class ValidateTicket extends Component {
       .get_ticket_to_validate(validator)
       .call({from: validator}).then((result) => {
         console.log(result);
-        this.setState({ val_ticket_list: result });  
+        this.setState({ val_ticket_list: result }); 
+        console.log(this.state.val_ticket_list); 
       });    
       
     }catch(err){
@@ -53,7 +54,6 @@ class ValidateTicket extends Component {
 
   onValidateTicket = async (e) => {
     e.preventDefault();
-    try{
         const validator = await web3.eth.getCoinbase();
         console.log(validator)
         const id = await web3.eth.net.getId();
@@ -63,19 +63,26 @@ class ValidateTicket extends Component {
         .send({ from: validator})
         .then((receipt) => {
         console.log(receipt);
-      });
-      renderNotification('success', 'Successo', 'Biglietto validato' );
+        renderNotification('success', 'Successo', 'Biglietto validato' );
+      }).catch((err) =>{
+        console.log("Biglietto non validato o già valido:"+err);
+        if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
+            renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
+          } else {
+            renderNotification('danger', 'Errore: ', 'Biglietto non validato o già valido');
+          };
 
-    }catch(e){
-    console.log("Biglietto non validato o già valido:"+e);
-    if(e.message === 'MetaMask Tx Signature: User denied transaction signature.'){
+        }); 
+      }
+    /*catch(err){
+    console.log("Biglietto non validato o già valido:"+err);
+    if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
         renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
       } else {
         renderNotification('danger', 'Errore: ', 'Biglietto non validato o già valido');
       }
-        }
-    }
-
+        } */
+    
   render() {
     return (
     <div className="container">
@@ -88,7 +95,8 @@ class ValidateTicket extends Component {
                   <th>Surname</th>
                   <th>EventID</th>
                   <th>Customer</th>
-                  <th>Validate</th>
+                  <th>Valid</th>
+                  <th>Option</th>
               </tr>
           </thead>
           <tbody>
@@ -99,7 +107,8 @@ class ValidateTicket extends Component {
                       <td>{event.surname}</td>
                       <td>{event.eventid}</td>
                       <td>{event.customer}</td>
-                      <div class="button-center"><Button variant="primary" type="button" onClick={this.onValidateTicket} value={event.ticketid}>Validate ticket</Button>{' '}</div>
+                      <td>{event.validate?('yes'):('no')}</td>
+                      <div class="button-center"><Button variant="primary" type="button" onClick={this.onValidateTicket} value={event.ticketid} disabled={event.validate===true}>Validate ticket</Button>{' '}</div>
                   </tr>
               )}
           </tbody>

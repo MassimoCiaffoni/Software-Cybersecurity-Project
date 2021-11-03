@@ -15,7 +15,11 @@ class App extends Component {
   constructor() {
     super();
 
-    this.state = { account: ''}
+    this.state = { account: {
+      address:'',
+      type: '',
+      }
+    }
 
     new Promise((resolve, reject) => {
       if (typeof window.ethereum !== 'undefined') {
@@ -49,46 +53,145 @@ class App extends Component {
   async getAccount() {
     const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
     const accounts=await web3.eth.getAccounts()
-    this.setState({account: accounts[0]})
+    this.setState((prevState) => ({
+      account: { ...prevState.account, address: accounts[0]}, }));
+    this.setAccountType(accounts[0]);
   }
+
+  setAccountType(current_account) {
+    // switching sull'account attivo per verificare i privilegi
+    switch (current_account) {
+      case "0x1f60a7C633DF64183c524C511BCAE908d65DD70c":
+        this.setState((prevState) => ({
+          account: { ...prevState.account, type: "event manager" },
+        }));
+        break;
+      case "0x755E4DAA0f81c115451b76e9998e1BBA3B11602F":
+        this.setState((prevState) => ({
+          account: { ...prevState.account, type: "validator" },
+        }));
+        break;
+      default:
+        this.setState((prevState) => ({
+          account: { ...prevState.account, type: "buyer" },
+        }));
+        break;
+    }
+  }
+  
 
 
 render() {
-  return (
-    <Router>
+
+  switch (this.state.account.type) {
+    case "event manager":
+      return (
+        <Router>
 
 
 
-      <div >
-      <ReactNotification />
-      <div className="App">
+        <div >
+        <ReactNotification />
+        <div className="App">
                 <header>
                     <div className="container">
-                    <div className="address">Address: &ensp;<span>{this.state.account}</span></div>
+                    <div className="address">Address: &ensp;<span>{this.state.account.address}</span></div>
+                    <div className="address">Type: &ensp;<span>{this.state.account.type}</span></div>
                         <Link to='/getevent' activeClassName="is-active">Event</Link>
                         <Link activeClassName='is-active' to="/event">Create Event</Link>
                         <Link activeClassName='is-active' to="/tickets">My Tickets</Link>
-                        <Link activeClassName='is-active' to="/validation">Validate Tickets</Link>
                         <Link activeClassName='is-active' to="/admin">Admin Options</Link>
                     </div>
                 </header>
-      </div>
-      <Switch>
-        <Route path="/event" component={CreateEvent} />
-        <Route path="/getevent" component={GetEvent} />
-        <Route path="/buy-ticket" component={InsertUserData} />
-        <Route path="/tickets" component={GetTickets} />
-        <Route path="/validation" component={ValidateTicket} />
-        <Route path="/admin" component={Admin} />
+        </div>
+        <Switch>
+          <Route path="/event" component={CreateEvent} />
+          <Route path="/getevent" component={GetEvent} />
+          <Route path="/buy-ticket" component={InsertUserData} />
+          <Route path="/tickets" component={GetTickets} />
+          <Route path="/admin" component={Admin} />
 
 
-      </Switch>
-      </div>
+        </Switch>
+        </div>
 
-    </Router >
+        </Router >
     
-  );
+      );
+    
+
+
+      case "validator":
+        return (
+          <Router>
+  
+  
+  
+          <div >
+          <ReactNotification />
+          <div className="App">
+                  <header>
+                      <div className="container">
+                      <div className="address">Address: &ensp;<span>{this.state.account.address}</span></div>
+                      <div className="address">Type: &ensp;<span>{this.state.account.type}</span></div>
+                          <Link to='/getevent' activeClassName="is-active">Event</Link>
+                          <Link activeClassName='is-active' to="/tickets">My Tickets</Link>
+                          <Link activeClassName='is-active' to="/validation">Validate Tickets</Link>
+                      </div>
+                  </header>
+          </div>
+          <Switch>
+            <Route path="/getevent" component={GetEvent} />
+            <Route path="/buy-ticket" component={InsertUserData} />
+            <Route path="/tickets" component={GetTickets} />
+            <Route path="/validation" component={ValidateTicket} />
+  
+  
+          </Switch>
+          </div>
+  
+          </Router >
+      
+        );
+
+      default:
+        return (
+          <Router>
+  
+  
+  
+          <div >
+          <ReactNotification />
+          <div className="App">
+                  <header>
+                      <div className="container">
+                      <div className="address">Address: &ensp;<span>{this.state.account.address}</span></div>
+                      <div className="address">Type: &ensp;<span>{this.state.account.type}</span></div>
+                          <Link to='/getevent' activeClassName="is-active">Event</Link>
+                          <Link activeClassName='is-active' to="/tickets">My Tickets</Link>
+                      </div>
+                  </header>
+          </div>
+          <Switch>
+            <Route path="/getevent" component={GetEvent} />
+            <Route path="/buy-ticket" component={InsertUserData} />
+            <Route path="/tickets" component={GetTickets} />
+  
+  
+          </Switch>
+          </div>
+  
+          </Router >
+      
+        );
+
+  }
+
+
+
+
 }
+
 }
 
 export default App;

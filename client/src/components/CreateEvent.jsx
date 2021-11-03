@@ -34,6 +34,7 @@ class CreateEvent extends Component {
     this.setState({buttonText: "Pubblico..."});
     this.setState({ buttonEnabled: false });
     const id = await web3.eth.net.getId();
+    console.log(id);
     const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address); 
     const event_organizer = await web3.eth.getAccounts();
     console.log(event_organizer);
@@ -43,7 +44,7 @@ class CreateEvent extends Component {
       console.log("event organizer:" + event_organizer)
       await eventInstance.methods
       .create_event(title,luogo,date,seats,price, event_organizer[0],'0x755E4DAA0f81c115451b76e9998e1BBA3B11602F')
-      .send({ from: event_organizer[0], gasPrice: 0})
+      .send({ from: event_organizer[0]})
       .then((receipt) => {
         console.log(receipt);
       });
