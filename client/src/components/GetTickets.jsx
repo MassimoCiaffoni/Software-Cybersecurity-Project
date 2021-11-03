@@ -53,8 +53,6 @@ class GetTickets extends Component {
                   <th>Name</th>
                   <th>Surname</th>
                   <th>EventID</th>
-                  <th>Sell</th>
-                  <th>Validate</th>
                   <th>Customer</th>
               </tr>
           </thead>
@@ -65,8 +63,6 @@ class GetTickets extends Component {
                       <td>{event.name}</td>
                       <td>{event.surname}</td>
                       <td>{event.eventid}</td>
-                      <td>{event.sell}</td>
-                      <td>{event.validate}</td>
                       <td>{event.customer}</td>
                   </tr>
               )}

@@ -47,53 +47,52 @@ class Admin extends Component {
 
   onFinishEvent = async (e) => {
     e.preventDefault();
-    try{
-      const event_manager = await web3.eth.getCoinbase();
-      console.log(event_manager)
-      const id = await web3.eth.net.getId();
-      const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
-      eventInstance.methods
+    const event_manager = await web3.eth.getCoinbase();
+    console.log(event_manager)
+    const id = await web3.eth.net.getId();
+    const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
+    eventInstance.methods
       .finish_event(e.target.value)
       .send({from: event_manager})
       .then((result) => {
         console.log(result);
         renderNotification('success', 'Successo', `Evento terminato correttamente!`);
-      });    
-      
-    }catch(err){
+      })    
+      .catch((err) =>{
       console.log("Error while updating tickets:"+err);
       if(e.message === 'MetaMask Tx Signature: User denied transaction signature.'){
         renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
       } else {
         renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
       }
-    }
+    });
   }
 
 
   onOverlueEvent = async (e) => {
     e.preventDefault();
-    try{
-      const event_manager = await web3.eth.getCoinbase();
-      console.log(event_manager)
-      const id = await web3.eth.net.getId();
-      const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
-      eventInstance.methods
+    const event_manager = await web3.eth.getCoinbase();
+    console.log(event_manager)
+    const id = await web3.eth.net.getId();
+    const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
+    eventInstance.methods
       .overrlue_event(e.target.value)
       .send({from: event_manager})
       .then((result) => {
         console.log(result);
         renderNotification('success', 'Successo', `Evento annullato!`);
-      });    
-    }catch(e){
+      })
+      .catch((e) =>{
       console.log("Error while updating tickets:"+e);
       if(e.message === 'MetaMask Tx Signature: User denied transaction signature.'){
         renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
       } else {
         renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
       }
-    }
+    });
+
   }
+  
 
   render() {
     return (
@@ -126,8 +125,8 @@ class Admin extends Component {
                         <td>{event.price}</td>
                         <td>{event.state}</td>
                         <td>{event.owner}</td>
-                        <div class="button-center"><Button variant="primary" type="button" onClick={this.onFinishEvent} value={event.id}>End Event</Button>{' '}</div>
-                        <div class="button-center"><Button variant="primary" type="button" onClick={this.onOverlueEvent} value={event.id}>Overlue Event</Button>{' '}</div>
+                        <div class="button-center"><Button variant="primary" type="button" onClick={this.onFinishEvent} value={event.id} disabled={event.state==="Concluso" || event.state==="Annullato"}>End Event</Button>{' '}</div>
+                        <div class="button-center"><Button variant="primary" type="button" onClick={this.onOverlueEvent} value={event.id} disabled={event.state==="Concluso" || event.state==="Annullato"}>Overrlue Event</Button>{' '}</div>
 
                     </tr>
                 )}
