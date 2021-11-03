@@ -144,6 +144,7 @@ contract Event {
             }
             
         }
+        require(flag==true, "Errore nella fase di acquisto");
         return flag;
         
     }
@@ -171,6 +172,26 @@ contract Event {
     }
 
 
+    function get_ticket_to_validate(address val) public view only_validator(val) returns(TicketData[] memory){
+        uint j=0;
+        for(uint i=0; i < get_ticket_lenght(); i++){ 
+            if(tickets[i].sell==true){
+                j++;
+            }
+        }
+        TicketData[] memory biglietti=new TicketData[](j);
+        uint l=0;
+        for(uint i=0; i < get_ticket_lenght(); i++){ 
+            if(tickets[i].sell==true){
+                biglietti[l]=TicketData(tickets[i].name,tickets[i].surname,tickets[i].ticketid,tickets[i].eventid,tickets[i].sell,tickets[i].validate,tickets[i].customer);
+                l++;
+            }
+        }
+        return biglietti;
+
+    }
+
+
     function validate_ticket(uint ticketid, address val) external only_validator(val)returns(string memory, address){
         bool flag=false;
         for(uint i=0; i < get_ticket_lenght(); i++){
@@ -179,10 +200,8 @@ contract Event {
                 flag=true;
             }
         }
-        if(flag)
-            return("Biglietto valido", val);
-        else
-            return("Biglitto gia' validato o non validabile", val);
+        require(flag==true, "Biglietto gia' validato o invalidabile");
+        return("Biglietto valido", val);
 
    }
     /*function set_event_sold(uint ticketid) internal returns (bool){
@@ -202,12 +221,18 @@ contract Event {
     }
 
     function get_personal_tickets(address cliente) public view returns(TicketData[] memory big){
-        TicketData[] memory biglietti=new TicketData[](get_ticket_lenght());
         uint j=0;
         for(uint i=0; i < get_ticket_lenght(); i++){ 
             if(tickets[i].customer==cliente){
-                biglietti[j]=TicketData(tickets[i].name,tickets[i].surname,tickets[i].ticketid,tickets[i].eventid,tickets[i].sell,tickets[i].validate,tickets[i].customer);
                 j++;
+            }
+        }
+        TicketData[] memory biglietti=new TicketData[](j);
+        uint l=0;
+        for(uint i=0; i < get_ticket_lenght(); i++){ 
+            if(tickets[i].customer==cliente){
+                biglietti[l]=TicketData(tickets[i].name,tickets[i].surname,tickets[i].ticketid,tickets[i].eventid,tickets[i].sell,tickets[i].validate,tickets[i].customer);
+                l++;
             }
         }
         return biglietti;

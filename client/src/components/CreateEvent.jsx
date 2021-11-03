@@ -42,8 +42,8 @@ class CreateEvent extends Component {
     try {    
       console.log("event organizer:" + event_organizer)
       await eventInstance.methods
-      .create_event(title,luogo,date,seats,price, event_organizer[0],'0x5528D8697cCB99822c3fe5c815912B5d16A5902f')
-      .send({ from: event_organizer[0]})
+      .create_event(title,luogo,date,seats,price, event_organizer[0],'0x755E4DAA0f81c115451b76e9998e1BBA3B11602F')
+      .send({ from: event_organizer[0], gasPrice: 0})
       .then((receipt) => {
         console.log(receipt);
       });

@@ -31,7 +31,7 @@ class GetTickets extends Component {
       const id = await web3.eth.net.getId();
       const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
       eventInstance.methods
-      .get_tickets()
+      .get_personal_tickets(visitator)
       .call({from: visitator}).then((result) => {
         console.log(result);
         this.setState({ ticket_list: result });  

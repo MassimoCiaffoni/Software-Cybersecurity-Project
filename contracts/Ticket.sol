@@ -32,8 +32,7 @@ contract Ticket {
     function buy_ticket(uint eventid, string memory nome, string memory cognome) public returns(string memory, bool, address){
         Event ev= Event(eventAddress);
         bool control=ev.check_ticket(eventid);
-        if(!control)
-            return ("Biglietti non disponibili o evento concluso",false, msg.sender);
+        require(control==true, "Biglietti finiti o evento concluso");
         //require(msg.sender==0xca3Ede26eCCfBF9C34f33f90F2205B5f31b5b47C, "Prova");
         address customer=msg.sender;
         

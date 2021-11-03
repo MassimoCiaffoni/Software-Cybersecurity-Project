@@ -28,6 +28,7 @@ class InsertUserData extends Component {
     const id = await web3.eth.net.getId();
     const ticketInstance = new web3.eth.Contract(Ticket.abi,Ticket.networks[id].address); 
     const buyer = await web3.eth.getAccounts();
+    try {  
     await ticketInstance.methods
     .buy_ticket(this.state.eventId, this.state.name, this.state.surname)
     .send({ from: buyer[0]})
@@ -36,7 +37,15 @@ class InsertUserData extends Component {
     });
 
     renderNotification('success', 'Successo', 'Biglietto acquistato da '+ this.state.name + ' ' +this.state.surname );
-
+    }catch(err){
+      console.log(err);
+      if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
+        renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
+      } 
+      else{
+        renderNotification('danger', 'Errore: ', "I biglietti sono terminati o l'evento non è più disponibile");
+      }
+    }
 
   }
 

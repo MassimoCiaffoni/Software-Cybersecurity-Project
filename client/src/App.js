@@ -8,6 +8,8 @@ import GetEvent from './components/GetEvent.jsx';
 import GetTickets from './components/GetTickets.jsx';
 import './App.css'
 import InsertUserData from './components/InsertUserData.jsx';
+import ValidateTicket from './components/ValidateTicket.jsx';
+import Admin from './components/Admin.jsx';
 
 class App extends Component {
   constructor() {
@@ -66,6 +68,8 @@ render() {
                         <Link to='/getevent' activeClassName="is-active">Event</Link>
                         <Link activeClassName='is-active' to="/event">Create Event</Link>
                         <Link activeClassName='is-active' to="/tickets">My Tickets</Link>
+                        <Link activeClassName='is-active' to="/validation">Validate Tickets</Link>
+                        <Link activeClassName='is-active' to="/admin">Admin Options</Link>
                     </div>
                 </header>
       </div>
@@ -74,6 +78,9 @@ render() {
         <Route path="/getevent" component={GetEvent} />
         <Route path="/buy-ticket" component={InsertUserData} />
         <Route path="/tickets" component={GetTickets} />
+        <Route path="/validation" component={ValidateTicket} />
+        <Route path="/admin" component={Admin} />
+
 
       </Switch>
       </div>
