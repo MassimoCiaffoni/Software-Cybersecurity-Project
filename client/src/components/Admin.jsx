@@ -5,6 +5,7 @@ import renderNotification from '../utils/notification-handler.js';
 import Button from 'react-bootstrap/Button'
 
 
+
 let web3;
 
 class Admin extends Component {
@@ -57,6 +58,7 @@ class Admin extends Component {
       .then((result) => {
         console.log(result);
         renderNotification('success', 'Successo', `Evento terminato correttamente!`);
+        window.location.reload(3000)
       })    
       .catch((err) =>{
       console.log("Error while updating tickets:"+err);
@@ -81,6 +83,7 @@ class Admin extends Component {
       .then((result) => {
         console.log(result);
         renderNotification('success', 'Successo', `Evento annullato!`);
+        window.location.reload(3000)
       })
       .catch((e) =>{
       console.log("Error while updating tickets:"+e);

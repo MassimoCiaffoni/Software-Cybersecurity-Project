@@ -59,7 +59,6 @@ class App extends Component {
   }
 
   setAccountType(current_account) {
-    // switching sull'account attivo per verificare i privilegi
     switch (current_account) {
       case "0x1f60a7C633DF64183c524C511BCAE908d65DD70c":
         this.setState((prevState) => ({

@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import Web3 from 'web3';
 import Event from "contracts/Event.json";
 import renderNotification from '../utils/notification-handler.js';
+const errorLog = require('../utils/logger.js').errorlog;
+const successlog = require('../utils/logger.js').successlog;
+
+
+
+
 
 let web3;
 
@@ -46,10 +52,9 @@ class CreateEvent extends Component {
       .create_event(title,luogo,date,seats,price, event_organizer[0],'0x755E4DAA0f81c115451b76e9998e1BBA3B11602F')
       .send({ from: event_organizer[0]})
       .then((receipt) => {
-        console.log(receipt);
-      });
-      
-      
+        console.log(receipt.events);
+        successlog.info(`Success Message and variables: ${receipt.events}`);
+          });        
       // notifica di successo
       renderNotification('success', 'Successo', `Evento creato correttamente!`);
 
@@ -103,7 +108,7 @@ class CreateEvent extends Component {
           <label className="left">Luogo</label><br /><input id="luogo"  type="text" className="validate" name="luogo" value={this.state.luogo} onChange={this.inputChangedHandler} /><br /><br />
           <label className="left">Data</label><br /><input id="date" type="text" className="input-control" name="date" value={this.state.date} onChange={this.inputChangedHandler}></input><br /><br />
           <label className="left">Numero Biglietti </label><br /><input id="seats" placeholder="10" type="number" className="input-control" name="seats" value={this.state.seats} onChange={this.inputChangedHandler} /><br /><br />
-          <label className="left">Prezzo (ETH) </label><br /><input id="price" placeholder="100" type="number" className="input-control" name="price" value={this.state.price} onChange={this.inputChangedHandler}></input><br /><br />
+          <label className="left">Prezzo (MilliEther) </label><br /><input id="price" placeholder="100" type="number" className="input-control" name="price" value={this.state.price} onChange={this.inputChangedHandler}></input><br /><br />
         <button type="submit" disabled={!this.state.buttonEnabled} className="btn waves-effect waves-light button-submit-form">{this.state.buttonText}</button>
         </form>
       </div>

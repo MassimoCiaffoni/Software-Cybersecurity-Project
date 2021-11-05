@@ -64,6 +64,7 @@ class ValidateTicket extends Component {
         .then((receipt) => {
         console.log(receipt);
         renderNotification('success', 'Successo', 'Biglietto validato' );
+        window.location.reload()
       }).catch((err) =>{
         console.log("Biglietto non validato o già valido:"+err);
         if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){

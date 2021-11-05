@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Web3 from 'web3';
 import renderNotification from '../utils/notification-handler.js';
 import Ticket from "contracts/Ticket.json";
+import Event from "contracts/Event.json";
 let web3;
 
 class InsertUserData extends Component {
@@ -12,6 +13,7 @@ class InsertUserData extends Component {
       name: '',
       surname: '',
       eventId: props.location.state,
+      price: 0,
 
       buttonText: "Acquista il biglietto",
       buttonEnabled: false
@@ -19,7 +21,29 @@ class InsertUserData extends Component {
     
     web3=new Web3(window.ethereum)
 
+    this.GetPrice();
+
   }
+
+
+  GetPrice = async () => {
+    const id = await web3.eth.net.getId();
+    const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address); 
+    const buyer = await web3.eth.getAccounts();
+    try {  
+    await eventInstance.methods
+    .get_event_price(this.state.eventId)
+    .call({from: buyer[0]}).then((result) => {
+      console.log(result);
+      this.setState({ price: result });  
+    });    
+    
+    }catch(e){
+    console.log("Error getting price:"+e);
+    }
+  }
+
+
 
 
 
@@ -29,13 +53,15 @@ class InsertUserData extends Component {
     const ticketInstance = new web3.eth.Contract(Ticket.abi,Ticket.networks[id].address); 
     const buyer = await web3.eth.getAccounts();
     try {  
+    web3.eth.sendTransaction({ from:buyer[0],to:"0x1f60a7C633DF64183c524C511BCAE908d65DD70c", value: web3.utils.toWei(this.state.price, 'milliether') });
     await ticketInstance.methods
     .buy_ticket(this.state.eventId, this.state.name, this.state.surname)
     .send({ from: buyer[0]})
     .then((receipt) => {
       console.log(receipt);
-    });
 
+    });
+    this.props.history.push({pathname: '/getevent'});
     renderNotification('success', 'Successo', 'Biglietto acquistato da '+ this.state.name + ' ' +this.state.surname );
     }catch(err){
       console.log(err);
