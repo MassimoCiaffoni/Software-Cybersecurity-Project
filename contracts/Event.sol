@@ -159,12 +159,12 @@ contract Event {
             return true;
     }
     
-    function buy_ticket( address customer, uint eventid, string memory name, string memory surname) external returns(string memory, bool, address){
+    function buy_ticket( address customer, uint eventid, string memory name, string memory surname) external returns(uint){
         TicketData memory biglietto=get_event_ticket(eventid);
         set_ticket_sold(biglietto.ticketid, name, surname, customer);
         reduce_remaining_tickets(eventid);
         emit TicketSold(eventid, biglietto.ticketid, customer);
-        return ("Biglietto acquistato", true , customer);      
+        return  biglietto.ticketid;      
     }
     
     function reduce_remaining_tickets(uint eventid) internal{
@@ -192,7 +192,7 @@ contract Event {
     }
 
 
-    function validate_ticket(uint ticketid, address val) external only_validator(val)returns(string memory, address){
+    function validate_ticket(uint ticketid, address val) external only_validator(val)returns(bool){
         bool flag=false;
         for(uint i=0; i < get_ticket_lenght(); i++){
             if(tickets[i].ticketid==ticketid && tickets[i].validate==false && tickets[i].sell==true){
@@ -201,7 +201,7 @@ contract Event {
             }
         }
         require(flag==true, "Biglietto gia' validato o invalidabile");
-        return("Biglietto valido", val);
+        return flag;
 
    }
     /*function set_event_sold(uint ticketid) internal returns (bool){

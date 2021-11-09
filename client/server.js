@@ -26,6 +26,5 @@ app.get('/crea_evento', (req, res) =>{
 app.post('/crea_evento' , function(req, res){
   console.log(req.body)
   data=req.body;
-  res.send("Sono dentro")
-  logger.info(`Evento creato || ${data} `);
+  logger.info(`Evento creato || ${JSON.stringify(data)} `);
 });

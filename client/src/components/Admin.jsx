@@ -56,9 +56,9 @@ class Admin extends Component {
       .finish_event(e.target.value)
       .send({from: event_manager})
       .then((result) => {
-        console.log(result);
+        console.log(result.events);
         renderNotification('success', 'Successo', `Evento terminato correttamente!`);
-        window.location.reload(3000)
+        this.onGetEvent();
       })    
       .catch((err) =>{
       console.log("Error while updating tickets:"+err);
@@ -81,9 +81,9 @@ class Admin extends Component {
       .overrlue_event(e.target.value)
       .send({from: event_manager})
       .then((result) => {
-        console.log(result);
+        console.log(result.events);
         renderNotification('success', 'Successo', `Evento annullato!`);
-        window.location.reload(3000)
+        this.onGetEvent();
       })
       .catch((e) =>{
       console.log("Error while updating tickets:"+e);

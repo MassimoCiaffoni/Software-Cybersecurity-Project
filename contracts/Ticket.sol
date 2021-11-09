@@ -16,6 +16,9 @@ contract Ticket {
         require(msg.sender == owner, "Errore");
         _;
     }
+
+    event TicketBought(uint indexed eventid, uint indexed ticketid, address indexed customer, string name, string surname );
+    event TicketValidated(uint indexed ticketid, address indexed validator);
     
     
     constructor(address _eventAddress) {
@@ -29,19 +32,22 @@ contract Ticket {
     }
 
     
-    function buy_ticket(uint eventid, string memory nome, string memory cognome) public returns(string memory, bool, address){
+    function buy_ticket(uint eventid, string memory nome, string memory cognome) public returns(uint){
         Event ev= Event(eventAddress);
         bool control=ev.check_ticket(eventid);
         require(control==true, "Biglietti finiti o evento concluso");
         //require(msg.sender==0xca3Ede26eCCfBF9C34f33f90F2205B5f31b5b47C, "Prova");
         address customer=msg.sender;
-        
-        return ev.buy_ticket( customer,eventid, nome, cognome);     
+        uint biglietto=ev.buy_ticket( customer,eventid, nome, cognome);
+        emit TicketBought(eventid, biglietto,customer, nome, cognome);  
+        return biglietto;
     }
 
-    function validate_ticket(uint ticketid) public only_owner returns(string memory,address) {
+    function validate_ticket(uint ticketid) public only_owner returns(bool) {
         Event ev= Event(eventAddress);
-        return ev.validate_ticket(ticketid, msg.sender);
+        bool flag= ev.validate_ticket(ticketid, msg.sender);
+        emit TicketValidated(ticketid, msg.sender);
+        return flag;
     }
 
 
