@@ -3,6 +3,7 @@ import Web3 from 'web3';
 import renderNotification from '../utils/notification-handler.js';
 import Ticket from "contracts/Ticket.json";
 import Event from "contracts/Event.json";
+import logger from '../utils/log-api.js'
 let web3;
 
 class InsertUserData extends Component {
@@ -59,6 +60,7 @@ class InsertUserData extends Component {
     .send({ from: buyer[0]})
     .then((receipt) => {
       console.log(receipt.events)
+      logger.log("info","Buy the ticket: "+ JSON.stringify(receipt.events))
 
     });
     this.props.history.push({pathname: '/getevent'});

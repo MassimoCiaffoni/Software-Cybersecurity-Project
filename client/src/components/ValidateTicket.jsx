@@ -4,7 +4,7 @@ import Event from "contracts/Event.json";
 import Ticket from "contracts/Ticket.json";
 import renderNotification from '../utils/notification-handler.js';
 import Button from 'react-bootstrap/Button'
-
+import logger from '../utils/log-api.js'
 
 
 let web3;
@@ -63,6 +63,7 @@ class ValidateTicket extends Component {
         .send({ from: validator})
         .then((receipt) => {
         console.log(receipt.events);
+        logger.log("info","Validate ticket: "+ JSON.stringify(receipt.events))
         renderNotification('success', 'Successo', 'Biglietto validato' );
         this.onGetValTicket();
       }).catch((err) =>{

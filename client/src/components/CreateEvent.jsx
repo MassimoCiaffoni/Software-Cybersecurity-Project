@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Web3 from 'web3';
 import Event from "contracts/Event.json";
 import renderNotification from '../utils/notification-handler.js';
-
+import logger from '../utils/log-api.js'
 
 
 
@@ -52,7 +52,7 @@ class CreateEvent extends Component {
       .send({ from: event_organizer[0]})
       .then((receipt) => {
         console.log(receipt.events);
-        this.connectlog(receipt.events)
+        logger.log("info","Created event: "+ JSON.stringify(receipt.events))
         
           });        
       // notifica di successo
@@ -91,19 +91,7 @@ class CreateEvent extends Component {
   }
 
 
-  connectlog = async(rec) => {
-    console.log(JSON.stringify(rec))
-    fetch('/crea_evento' , {
-      method: "POST",
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(rec),
-    })
-    .then((result) =>{
-      console.log(result)
-    })
-  };
+
 
 
 

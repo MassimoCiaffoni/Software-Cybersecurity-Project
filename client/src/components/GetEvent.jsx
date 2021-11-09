@@ -81,7 +81,7 @@ class GetEvent extends Component {
                       <td>{event.price}</td>
                       <td>{event.state}</td>
                       <td>{event.owner}</td>
-                      <div class="button-center"><Button variant="primary" type="button" onClick={this.onBuyTicket} value={event.id} disabled={event.remaining_tickets==0 || event.state==="Concluso" || event.state==="Annullato"}>Buy ticket</Button>{' '}</div>
+                      <div class="button-center"><Button variant="primary" type="button" onClick={this.onBuyTicket} value={event.id} disabled={event.remaining_tickets===0 || event.state==="Concluso" || event.state==="Annullato"}>Buy ticket</Button>{' '}</div>
                   </tr>
               )}
           </tbody>

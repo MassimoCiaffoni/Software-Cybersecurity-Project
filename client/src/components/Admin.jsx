@@ -3,7 +3,7 @@ import Web3 from 'web3';
 import Event from "contracts/Event.json";
 import renderNotification from '../utils/notification-handler.js';
 import Button from 'react-bootstrap/Button'
-
+import logger from '../utils/log-api.js'
 
 
 let web3;
@@ -58,6 +58,7 @@ class Admin extends Component {
       .then((result) => {
         console.log(result.events);
         renderNotification('success', 'Successo', `Evento terminato correttamente!`);
+        logger.log("info","Finish the event: "+ JSON.stringify(result.events))
         this.onGetEvent();
       })    
       .catch((err) =>{
@@ -83,6 +84,7 @@ class Admin extends Component {
       .then((result) => {
         console.log(result.events);
         renderNotification('success', 'Successo', `Evento annullato!`);
+        logger.log("info","Overlue the event: "+ JSON.stringify(result.events))
         this.onGetEvent();
       })
       .catch((e) =>{

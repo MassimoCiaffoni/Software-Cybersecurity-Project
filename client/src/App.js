@@ -10,7 +10,7 @@ import './App.css'
 import InsertUserData from './components/InsertUserData.jsx';
 import ValidateTicket from './components/ValidateTicket.jsx';
 import Admin from './components/Admin.jsx';
-
+import logger from './utils/log-api.js'
 
 class App extends Component {
   constructor() {
@@ -44,14 +44,11 @@ class App extends Component {
       }
       resolve(new Web3('http://127.0.0.1:7545'));
     });
-
+    
     window.ethereum.on('accountsChanged', function () {
       window.location.reload();
     });
-    this.getAccount();
-    this.callBackendAPI()
-      .then(res => this.setState({ data: res.express }, req => this.state.account.address))
-      .catch(err => console.log(err));
+    this.getAccount();    
     
   }
 
@@ -61,7 +58,7 @@ class App extends Component {
     this.setState((prevState) => ({
       account: { ...prevState.account, address: accounts[0]}, }));
     this.setAccountType(accounts[0]);
-    //this.connectlog(accounts[0]);
+    logger.log("info","Connected with account "+this.state.account.type+" : "+ accounts[0] );
   }
 
   setAccountType(current_account) {
@@ -83,36 +80,7 @@ class App extends Component {
         break;
     }
   }
-
-
-  callBackendAPI = async () => {
-    const response = await fetch('/express_backend');
-    const body = await response.json();
-
-    if (response.status !== 200) {
-      throw Error(body.message) 
-    }
-    return body;
-  };
-
-  /*connectlog = async(current_account) => {
-    console.log(JSON.stringify(current_account))
-    await fetch('/connesso' , {
-      method: "POST",
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(current_account),
-    })
-    .then((response) => response.json())
-    .then((result) =>{
-      console.log(result)
-    })
-  }; */
-
-
   
-
 
 render() {
 

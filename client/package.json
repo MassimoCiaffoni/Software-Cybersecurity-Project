@@ -28,7 +28,8 @@
     "winston-transport-browserconsole": "^1.0.5"
   },
   "scripts": {
-    "start": "react-scripts start && node server.js",
+    "start": "react-scripts start ",
+    "start-all": "node server.js | react-scripts start ",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
