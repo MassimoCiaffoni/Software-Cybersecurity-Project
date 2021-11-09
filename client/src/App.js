@@ -11,6 +11,7 @@ import InsertUserData from './components/InsertUserData.jsx';
 import ValidateTicket from './components/ValidateTicket.jsx';
 import Admin from './components/Admin.jsx';
 
+
 class App extends Component {
   constructor() {
     super();
@@ -18,12 +19,13 @@ class App extends Component {
     this.state = { account: {
       address:'',
       type: '',
-      }
+      },
+      data: null,
     }
 
     new Promise((resolve, reject) => {
       if (typeof window.ethereum !== 'undefined') {
-        const web3 = new Web3(window.ethereum);
+        new Web3(window.ethereum);
         window.ethereum.enable()
           .then(() => {
             resolve(
@@ -47,6 +49,9 @@ class App extends Component {
       window.location.reload();
     });
     this.getAccount();
+    this.callBackendAPI()
+      .then(res => this.setState({ data: res.express }, req => this.state.account.address))
+      .catch(err => console.log(err));
     
   }
 
@@ -56,6 +61,7 @@ class App extends Component {
     this.setState((prevState) => ({
       account: { ...prevState.account, address: accounts[0]}, }));
     this.setAccountType(accounts[0]);
+    //this.connectlog(accounts[0]);
   }
 
   setAccountType(current_account) {
@@ -77,6 +83,34 @@ class App extends Component {
         break;
     }
   }
+
+
+  callBackendAPI = async () => {
+    const response = await fetch('/express_backend');
+    const body = await response.json();
+
+    if (response.status !== 200) {
+      throw Error(body.message) 
+    }
+    return body;
+  };
+
+  /*connectlog = async(current_account) => {
+    console.log(JSON.stringify(current_account))
+    await fetch('/connesso' , {
+      method: "POST",
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(current_account),
+    })
+    .then((response) => response.json())
+    .then((result) =>{
+      console.log(result)
+    })
+  }; */
+
+
   
 
 
@@ -102,6 +136,7 @@ render() {
                         <Link activeClassName='is-active' to="/admin">Admin Options</Link>
                     </div>
                 </header>
+                <div>{this.state.data}</div>
         </div>
         <Switch>
           <Route path="/event" component={CreateEvent} />
@@ -109,6 +144,7 @@ render() {
           <Route path="/buy-ticket" component={InsertUserData} />
           <Route path="/tickets" component={GetTickets} />
           <Route path="/admin" component={Admin} />
+
 
 
         </Switch>
