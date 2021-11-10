@@ -66,8 +66,10 @@ class CreateEvent extends Component {
       console.log(err);
       if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
         renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
+        logger.log('error', 'Error on event creation by '+JSON.stringify(event_organizer[0])+' with message: '+JSON.stringify(err.message))
       } else {
         renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
+        logger.log('error', 'Error on event creation by '+JSON.stringify(event_organizer[0])+' with message: '+JSON.stringify(err.message))
       }
       this.setState({ buttonText: "Pubblica evento" });
       this.setState({ buttonEnabled: true });

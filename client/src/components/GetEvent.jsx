@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Web3 from 'web3';
 import Event from "contracts/Event.json";
 import Button from 'react-bootstrap/Button'
+import logger from '../utils/log-api.js'
 
 let web3;
 
@@ -26,9 +27,9 @@ class GetEvent extends Component {
   }
 
   onGetEvent = async () => {
+    const visitator = await web3.eth.getCoinbase();
+    console.log(visitator)
     try{
-      const visitator = await web3.eth.getCoinbase();
-      console.log(visitator)
       const id = await web3.eth.net.getId();
       const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
       eventInstance.methods
@@ -40,6 +41,7 @@ class GetEvent extends Component {
       
     }catch(e){
       console.log("Error while updating the events:"+e);
+      logger.log("Error with get events by "+JSON.stringify(visitator)+" with message: "+JSON.stringify(e.message))
     }
   }
 
@@ -81,7 +83,7 @@ class GetEvent extends Component {
                       <td>{event.price}</td>
                       <td>{event.state}</td>
                       <td>{event.owner}</td>
-                      <div class="button-center"><Button variant="primary" type="button" onClick={this.onBuyTicket} value={event.id} disabled={event.remaining_tickets===0 || event.state==="Concluso" || event.state==="Annullato"}>Buy ticket</Button>{' '}</div>
+                      <div class="button-center"><Button variant="primary" type="button" onClick={this.onBuyTicket} value={event.id} disabled={event.remaining_tickets==='0' || event.state==="Concluso" || event.state==="Annullato"}>Buy ticket</Button>{' '}</div>
                   </tr>
               )}
           </tbody>

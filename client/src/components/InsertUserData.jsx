@@ -41,6 +41,7 @@ class InsertUserData extends Component {
     
     }catch(e){
     console.log("Error getting price:"+e);
+    console.log('error', 'Error on get price for event '+JSON.stringify(this.state.eventId)+' by '+JSON.stringify(buyer[0]))
     }
   }
 
@@ -54,7 +55,7 @@ class InsertUserData extends Component {
     const ticketInstance = new web3.eth.Contract(Ticket.abi,Ticket.networks[id].address); 
     const buyer = await web3.eth.getAccounts();
     try {  
-    var result=await web3.eth.sendTransaction({ from:buyer[0],to:"0x1f60a7C633DF64183c524C511BCAE908d65DD70c", value: web3.utils.toWei(this.state.price, 'milliether') });
+    var result=await web3.eth.sendTransaction({ from:buyer[0],to:"0x1f60a7C633DF64183c524C511BCAE908d65DD70c", value: web3.utils.toWei(this.state.price, 'milliether')});
     await ticketInstance.methods
     .buy_ticket(this.state.eventId, this.state.name, this.state.surname)
     .send({ from: buyer[0]})
@@ -69,9 +70,11 @@ class InsertUserData extends Component {
       console.log(err);
       if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
         renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
+        logger.log('error', 'Purchase ticket by '+JSON.stringify(buyer[0])+" failed with message: "+JSON.stringify(err.message))
       } 
       else{
         renderNotification('danger', 'Errore: ', "I biglietti sono terminati o l'evento non è più disponibile");
+        logger.log('error', 'Purchase ticket by '+JSON.stringify(buyer[0])+" failed with message: "+JSON.stringify(err.message))
       }
     }
 

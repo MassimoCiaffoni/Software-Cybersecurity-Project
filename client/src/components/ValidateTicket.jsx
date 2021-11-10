@@ -29,9 +29,9 @@ class ValidateTicket extends Component {
   }
 
   onGetValTicket = async () => {
+    const validator = await web3.eth.getCoinbase();
+    console.log(validator)
     try{
-      const validator = await web3.eth.getCoinbase();
-      console.log(validator)
       const id = await web3.eth.net.getId();
       const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
       eventInstance.methods
@@ -46,8 +46,10 @@ class ValidateTicket extends Component {
       console.log("Non sei autorizzato ad accedere:"+err);
       if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
         renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
+        logger.log('error', 'Error on get ticket to validate with message: '+JSON.stringify(err.message)+" by "+JSON.stringify(validator))
       } else {
         renderNotification('danger', 'Errore: ', 'Non sei autorizzato ad accedere');
+        logger.log('error', 'Error on get ticket to validate with message: '+JSON.stringify(err.message)+" by "+JSON.stringify(validator))
       }
     }
   }
@@ -70,8 +72,10 @@ class ValidateTicket extends Component {
         console.log("Biglietto non validato o già valido:"+err);
         if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
             renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
+            logger.log('error', 'Error on validation with message: '+JSON.stringify(err.message)+" by "+JSON.stringify(validator))
           } else {
             renderNotification('danger', 'Errore: ', 'Biglietto non validato o già valido');
+            logger.log('error', 'Error on validation with message: '+JSON.stringify(err.message)+" by "+JSON.stringify(validator))
           };
 
         }); 

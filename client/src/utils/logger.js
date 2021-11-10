@@ -1,10 +1,10 @@
 const { createLogger, format, transports } = require('winston');
-const winston= require('winston');
+
 
 
 
 module.exports = createLogger({
-format: winston.format.json(),
+format: format.json(),
 transports:
     new transports.File({
     filename: 'logs/server.log',
