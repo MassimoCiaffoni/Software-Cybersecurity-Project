@@ -28,8 +28,8 @@ class Admin extends Component {
   }
 
   onGetEvent = async () => {
+    const visitator = await web3.eth.getCoinbase();
     try{
-      const visitator = await web3.eth.getCoinbase();
       console.log(visitator)
       const id = await web3.eth.net.getId();
       const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
@@ -42,6 +42,7 @@ class Admin extends Component {
       
     }catch(e){
       console.log("Error while updating the events:"+e);
+      console.logger('error', 'Error on get events with message: '+JSON.stringify(e.message)+JSON.stringify(visitator))
     }
   }
 
@@ -63,10 +64,13 @@ class Admin extends Component {
       })    
       .catch((err) =>{
       console.log("Error while updating tickets:"+err);
-      if(e.message === 'MetaMask Tx Signature: User denied transaction signature.'){
+      if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
         renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
+        logger.log('error', 'Error on finish event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(err.message))
+
       } else {
         renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
+        logger.log('error', 'Error on finish event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(err.message))
       }
     });
   }
@@ -91,8 +95,10 @@ class Admin extends Component {
       console.log("Error while updating tickets:"+e);
       if(e.message === 'MetaMask Tx Signature: User denied transaction signature.'){
         renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
+        logger.log('error', 'Error on invalidate event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(e.message))
       } else {
         renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
+        logger.log('error', 'Error on invalidate event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(e.message))
       }
     });
 
