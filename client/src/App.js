@@ -6,11 +6,13 @@ import Web3 from 'web3'
 import CreateEvent from './components/CreateEvent.jsx';
 import GetEvent from './components/GetEvent.jsx';
 import GetTickets from './components/GetTickets.jsx';
+import Welcome from './components/Welcome.jsx';
 import './App.css'
 import InsertUserData from './components/InsertUserData.jsx';
 import ValidateTicket from './components/ValidateTicket.jsx';
 import Admin from './components/Admin.jsx';
 import logger from './utils/log-api.js'
+
 
 class App extends Component {
   constructor() {
@@ -83,12 +85,16 @@ class App extends Component {
   
 
 render() {
+  
+
+
 
   switch (this.state.account.type) {
     case "event manager":
       return (
+        
         <Router>
-
+          
 
 
         <div >
@@ -106,18 +112,19 @@ render() {
                 </header>
                 <div>{this.state.data}</div>
         </div>
+        
         <Switch>
           <Route path="/event" component={CreateEvent} />
           <Route path="/getevent" component={GetEvent} />
           <Route path="/buy-ticket" component={InsertUserData} />
           <Route path="/tickets" component={GetTickets} />
           <Route path="/admin" component={Admin} />
-
+          <Route path="/" component={Welcome} />
 
 
         </Switch>
         </div>
-
+        
         </Router >
     
       );
@@ -126,9 +133,7 @@ render() {
 
       case "validator":
         return (
-          <Router>
-  
-  
+          <Router>  
   
           <div >
           <ReactNotification />
@@ -148,7 +153,7 @@ render() {
             <Route path="/buy-ticket" component={InsertUserData} />
             <Route path="/tickets" component={GetTickets} />
             <Route path="/validation" component={ValidateTicket} />
-  
+            <Route path="/" component={Welcome} />
   
           </Switch>
           </div>
@@ -179,7 +184,7 @@ render() {
             <Route path="/getevent" component={GetEvent} />
             <Route path="/buy-ticket" component={InsertUserData} />
             <Route path="/tickets" component={GetTickets} />
-  
+            <Route path="/" component={Welcome} />
   
           </Switch>
           </div>

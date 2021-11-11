@@ -27,4 +27,15 @@ footer {
     min-width: max-content;
    
   }
+
+  .welcome {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px
+  }
+
+    
+
   
