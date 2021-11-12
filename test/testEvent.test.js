@@ -109,11 +109,4 @@ contract('Event Ticketing', accounts=> {
         assert.equal(newEvent[0].state, 'Annullato')
     });
 
-
-    
-
-    /*it('has an owner', async function(){
-        const owner= await eventInstance.owner;
-
-    }*/
 });

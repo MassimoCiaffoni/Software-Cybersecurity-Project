@@ -55,7 +55,7 @@ class InsertUserData extends Component {
     const ticketInstance = new web3.eth.Contract(Ticket.abi,Ticket.networks[id].address); 
     const buyer = await web3.eth.getAccounts();
     try {  
-    var result=await web3.eth.sendTransaction({ from:buyer[0],to:"0x1f60a7C633DF64183c524C511BCAE908d65DD70c", value: web3.utils.toWei(this.state.price, 'milliether')});
+    await web3.eth.sendTransaction({ from:buyer[0],to:"0x1f60a7C633DF64183c524C511BCAE908d65DD70c", value: web3.utils.toWei(this.state.price, 'milliether')});
     await ticketInstance.methods
     .buy_ticket(this.state.eventId, this.state.name, this.state.surname)
     .send({ from: buyer[0]})
