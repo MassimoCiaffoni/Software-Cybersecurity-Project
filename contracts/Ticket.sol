@@ -36,7 +36,6 @@ contract Ticket {
         Event ev= Event(eventAddress);
         bool control=ev.check_ticket(eventid);
         require(control==true, "Biglietti finiti o evento concluso");
-        //require(msg.sender==0xca3Ede26eCCfBF9C34f33f90F2205B5f31b5b47C, "Prova");
         address customer=msg.sender;
         uint biglietto=ev.buy_ticket( customer,eventid, nome, cognome);
         emit TicketBought(eventid, biglietto,customer, nome, cognome);  

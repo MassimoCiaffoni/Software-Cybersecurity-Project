@@ -8,30 +8,32 @@ let web3;
 class GetTickets extends Component {
   constructor() {
     super();
-    
-    this.state = {
-      
-      ticket_list: [],
 
-    
+     //define state to save the list of the tickets
+    this.state = {      
+      ticket_list: []    
     };
-    
+
+    //connection with the blockchain
     web3=new Web3(window.ethereum)
 
   }
 
   async componentDidMount() {
+     //when the page is loaded, get the event list
     await this.onGetTicket();
   }
 
+  //function that get the ticket list from the blockchain
   onGetTicket = async () => {
-    try{
-      const visitator = await web3.eth.getCoinbase();
-      console.log(visitator)
+    //get the address of the user 
+    const visitator = await web3.eth.getCoinbase();
+    try{      
+      //get the instance of the contract event
       const id = await web3.eth.net.getId();
       const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
-      eventInstance.methods
-      .get_personal_tickets(visitator)
+      //get ticket list from the contract
+      eventInstance.methods.get_personal_tickets(visitator)
       .call({from: visitator}).then((result) => {
         console.log(result);
         this.setState({ ticket_list: result });  
@@ -39,10 +41,12 @@ class GetTickets extends Component {
       
     }catch(e){
       console.log("Error while updating tickets:"+e);
+      logger.log("Error with get tickets by "+JSON.stringify(visitator)+" with message: "+JSON.stringify(e.message))
     }
   }
 
   render() {
+    //table of the tickets
     return (
     <div className="container">
       <h3 className="p-3 text-center">My Tickets</h3>
@@ -57,13 +61,13 @@ class GetTickets extends Component {
               </tr>
           </thead>
           <tbody>
-              {this.state.ticket_list && this.state.ticket_list.map(event =>
-                  <tr key={event.ticketid}>
-                      <td>{event.ticketid}</td>
-                      <td>{event.name}</td>
-                      <td>{event.surname}</td>
-                      <td>{event.eventid}</td>
-                      <td>{event.customer}</td>
+              {this.state.ticket_list && this.state.ticket_list.map(ticket =>
+                  <tr key={ticket.ticketid}>
+                      <td>{ticket.ticketid}</td>
+                      <td>{ticket.name}</td>
+                      <td>{ticket.surname}</td>
+                      <td>{ticket.eventid}</td>
+                      <td>{ticket.customer}</td>
                   </tr>
               )}
           </tbody>

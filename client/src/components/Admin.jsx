@@ -12,47 +12,52 @@ class Admin extends Component {
   constructor() {
     super();
     
-    this.state = {
-      
-      event_list: [],
-
-    
+    //define state to save the list of the events
+    this.state = {      
+      event_list: []    
     };
     
+    //connection with the blockchain
     web3=new Web3(window.ethereum)
 
   }
 
   async componentDidMount() {
+    //when the page is loaded, get the event list
     await this.onGetEvent();
   }
 
+  //function that get the event list from the blockchain
   onGetEvent = async () => {
-    const visitator = await web3.eth.getCoinbase();
+    //get the address of the user (event manager)
+    const user = await web3.eth.getCoinbase();
     try{
-      console.log(visitator)
+      //get the instance of the contract event
       const id = await web3.eth.net.getId();
       const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
-      eventInstance.methods
-      .get_events()
-      .call({from: visitator}).then((result) => {
+      //get events list from the contract
+      eventInstance.methods.get_events()
+      .call({from: user}).then((result) => {
         console.log(result);
         this.setState({ event_list: result });  
       });    
       
     }catch(e){
       console.log("Error while updating the events:"+e);
-      console.logger('error', 'Error on get events with message: '+JSON.stringify(e.message)+JSON.stringify(visitator))
+      logger.log("Error with get events by "+JSON.stringify(user)+" with message: "+JSON.stringify(e.message))
     }
   }
 
-
+  //function to set an event as finished
   onFinishEvent = async (e) => {
     e.preventDefault();
+    //get the address of the user (event manager)
     const event_manager = await web3.eth.getCoinbase();
     console.log(event_manager)
+    //get the instance of the contract event
     const id = await web3.eth.net.getId();
     const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
+    //set the event as finished
     eventInstance.methods
       .finish_event(e.target.value)
       .send({from: event_manager})
@@ -63,25 +68,28 @@ class Admin extends Component {
         this.onGetEvent();
       })    
       .catch((err) =>{
-      console.log("Error while updating tickets:"+err);
-      if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
-        renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
-        logger.log('error', 'Error on finish event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(err.message))
+        console.log("Error while updating tickets:"+err);
+        if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
+          renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
+          logger.log('error', 'Error on finish event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(err.message))
 
-      } else {
-        renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
-        logger.log('error', 'Error on finish event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(err.message))
-      }
+        } else {
+          renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
+          logger.log('error', 'Error on finish event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(err.message))
+        }
     });
   }
 
-
-  onOverlueEvent = async (e) => {
+  //function to overrlue an event
+  onOverrlueEvent = async (e) => {
     e.preventDefault();
+    //get the address of the user (event manager)
     const event_manager = await web3.eth.getCoinbase();
     console.log(event_manager)
+    //get the instance of the contract event
     const id = await web3.eth.net.getId();
     const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
+    //set the event as overrlued
     eventInstance.methods
       .overrlue_event(e.target.value)
       .send({from: event_manager})
@@ -92,20 +100,20 @@ class Admin extends Component {
         this.onGetEvent();
       })
       .catch((e) =>{
-      console.log("Error while updating tickets:"+e);
-      if(e.message === 'MetaMask Tx Signature: User denied transaction signature.'){
-        renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
-        logger.log('error', 'Error on invalidate event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(e.message))
-      } else {
-        renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
-        logger.log('error', 'Error on invalidate event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(e.message))
-      }
-    });
-
+        console.log("Error while updating tickets:"+e);
+        if(e.message === 'MetaMask Tx Signature: User denied transaction signature.'){
+          renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
+          logger.log('error', 'Error on invalidate event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(e.message))
+        } else {
+          renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
+          logger.log('error', 'Error on invalidate event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(e.message))
+        }
+      });
   }
   
 
   render() {
+    //table of the events
     return (
         <div className="container">
         <h3 className="p-3 text-center">List of Events</h3>
@@ -137,7 +145,7 @@ class Admin extends Component {
                         <td>{event.state}</td>
                         <td>{event.owner}</td>
                         <div class="button-center"><Button variant="primary" type="button" onClick={this.onFinishEvent} value={event.id} disabled={event.state==="Concluso" || event.state==="Annullato"}>End Event</Button>{' '}</div>
-                        <div class="button-center"><Button variant="primary" type="button" onClick={this.onOverlueEvent} value={event.id} disabled={event.state==="Concluso" || event.state==="Annullato"}>Overrlue Event</Button>{' '}</div>
+                        <div class="button-center"><Button variant="primary" type="button" onClick={this.onOverrlueEvent} value={event.id} disabled={event.state==="Concluso" || event.state==="Annullato"}>Overrlue Event</Button>{' '}</div>
 
                     </tr>
                 )}
@@ -146,10 +154,6 @@ class Admin extends Component {
         </div>  
     )
   }
-
-
-
-
 }
 
 export default Admin;

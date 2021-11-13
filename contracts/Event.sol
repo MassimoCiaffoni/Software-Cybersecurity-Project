@@ -243,26 +243,14 @@ contract Event {
     function get_event_price(uint eventid) public view returns(uint) {
         return events[eventid].price;
     }
-    /*function delete_event_list(uint id) public only_owner {
-        bool deletable=false;
-        string memory an="Annullato";
-        string memory cn="Concluso";
-        for(uint i=0; i < get_event_length(); i++){
-            if(keccak256(abi.encodePacked(events[i]))==keccak256(abi.encodePacked(an)))
-                deletable=true;
-        }
-        
-        if(deletable)
-            delete events;
-    } */
-  
+      
      
-     function get_event(uint id) public view returns(EventData memory evento){
-         require(id < get_event_length(), "L'evento non esiste");
-         for(uint i=0; i < get_event_length(); i++){
-             if(events[i].id==id)
-                return events[i];
-         }
+    function get_event(uint id) public view returns(EventData memory evento){
+        require(id < get_event_length(), "L'evento non esiste");
+        for(uint i=0; i < get_event_length(); i++){
+            if(events[i].id==id)
+            return events[i];
+        }
      }
      
      function get_event_length() internal view returns (uint){
