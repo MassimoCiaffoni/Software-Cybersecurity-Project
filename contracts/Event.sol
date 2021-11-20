@@ -78,6 +78,7 @@ contract Event {
     event EventFinished(uint indexed eventid, address indexed creator);
     event TicketsGenerated(uint indexed eventid, uint indexed totalticket, address indexed creator);
     event TicketSold(uint indexed eventid, uint ticketid, address indexed customer);
+    event WithDraw(address indexed creator);
     
     
     function  create_event(string memory title, string memory  luogo, string memory  date, uint seats, uint256 price, address res, address val) public only_owner returns(uint) {
@@ -159,12 +160,20 @@ contract Event {
             return true;
     }
     
-    function buy_ticket( address customer, uint eventid, string memory name, string memory surname) external returns(uint){
+    function buy_ticket( address payable customer, uint eventid, string memory name, string memory surname) external payable returns(uint){
+        uint price=get_event_price(eventid);
+        require(msg.value==price, "Fondi non sufficenti");
         TicketData memory biglietto=get_event_ticket(eventid);
         set_ticket_sold(biglietto.ticketid, name, surname, customer);
         reduce_remaining_tickets(eventid);
         emit TicketSold(eventid, biglietto.ticketid, customer);
         return  biglietto.ticketid;      
+    }
+
+    function withdraw() public only_owner {
+        address payable indirizzo= payable(msg.sender);
+        indirizzo.transfer(getBalance());
+        emit WithDraw(indirizzo);
     }
     
     function reduce_remaining_tickets(uint eventid) internal{
@@ -283,13 +292,8 @@ contract Event {
          return("Validator impostato", validator);
      }
      
-     function get_balance() public view returns (uint256){
-        return owner.balance;
-    }
-
-    function get_address() public view returns(address){
-        return owner;
-    }
-
+     function getBalance() public view returns (uint) {
+         return address(this).balance;
+     }
     
 }  

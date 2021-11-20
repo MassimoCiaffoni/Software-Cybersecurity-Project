@@ -15,6 +15,7 @@ class Admin extends Component {
     this.state = {
       
       event_list: [],
+      contract_balance: 0
 
     
     };
@@ -25,6 +26,21 @@ class Admin extends Component {
 
   async componentDidMount() {
     await this.onGetEvent();
+    await this.onGetContractBalance();
+  }
+
+  onGetContractBalance = async () => {
+    const event_manager = await web3.eth.getCoinbase();
+    console.log(event_manager)
+    const id = await web3.eth.net.getId();
+    const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
+    eventInstance.methods
+    .getBalance()
+    .call({from: event_manager})
+    .then((result) => {
+      console.log(result);
+      this.setState({contract_balance: result})
+    })
   }
 
   onGetEvent = async () => {
@@ -103,11 +119,40 @@ class Admin extends Component {
     });
 
   }
+
+  onWithdraw = async (e) => {
+    e.preventDefault();
+    const event_manager = await web3.eth.getCoinbase();
+    console.log(event_manager)
+    const id = await web3.eth.net.getId();
+    const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
+    eventInstance.methods
+    .withdraw()
+    .send({from: event_manager})
+    .then((result) =>{
+      renderNotification('success', 'Successo', `Ether ritirati correttamente`);
+      console.log(result.events)
+      logger.log('info', 'Ether transfered to event manager with address: '+ JSON.stringify(result.events))
+      this.onGetContractBalance();
+    })
+    .catch((err) =>{
+      console.log(err);
+      if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
+        renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
+        logger.log('error', 'Error on withdraw by '+JSON.stringify(event_manager)+' with message: '+JSON.stringify(err.message))
+      } else {
+        renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
+        logger.log('error', 'Error on withdraw by '+JSON.stringify(event_manager)+' with message: '+JSON.stringify(err.message))
+      }
+
+    })
+  }
+
   
 
   render() {
     return (
-        <div className="container">
+        <div div className="container">
         <h3 className="p-3 text-center">List of Events</h3>
         <table className="table table-striped table-bordered">
             <thead>
@@ -143,7 +188,11 @@ class Admin extends Component {
                 )}
             </tbody>
         </table>
-        </div>  
+        <div>
+        <h3 className="p-3 text-center">WithDraw Ether</h3>
+        <div class="button-center"><Button variant="primary" type="button" onClick={this.onWithdraw} disabled={this.state.contract_balance==='0'}>Withdraw</Button>{' '}</div>
+        </div>
+        </div>
     )
   }
 

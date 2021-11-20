@@ -48,24 +48,21 @@ class InsertUserData extends Component {
 
 
 
-
   onBuyTicket = async (e) => {
     e.preventDefault();
     const id = await web3.eth.net.getId();
-    const ticketInstance = new web3.eth.Contract(Ticket.abi,Ticket.networks[id].address); 
+    const ticketInstance = new web3.eth.Contract(Ticket.abi,Ticket.networks[id].address,{transactionConfirmationBlocks: 1}); 
     const buyer = await web3.eth.getAccounts();
     try {  
-    var result=await web3.eth.sendTransaction({ from:buyer[0],to:"0x1f60a7C633DF64183c524C511BCAE908d65DD70c", value: web3.utils.toWei(this.state.price, 'milliether')});
-    await ticketInstance.methods
+    ticketInstance.methods
     .buy_ticket(this.state.eventId, this.state.name, this.state.surname)
-    .send({ from: buyer[0]})
+    .send({ from: buyer[0], value: this.state.price})
     .then((receipt) => {
       console.log(receipt.events)
       logger.log("info","Buy the ticket: "+ JSON.stringify(receipt.events))
-
+      this.props.history.push({pathname: '/getevent'});
+      renderNotification('success', 'Successo', 'Biglietto acquistato da '+ this.state.name + ' ' +this.state.surname );
     });
-    this.props.history.push({pathname: '/getevent'});
-    renderNotification('success', 'Successo', 'Biglietto acquistato da '+ this.state.name + ' ' +this.state.surname );
     }catch(err){
       console.log(err);
       if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){

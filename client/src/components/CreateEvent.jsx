@@ -113,7 +113,7 @@ class CreateEvent extends Component {
           <label className="left">Luogo</label><br /><input id="luogo"  type="text" className="validate" name="luogo" value={this.state.luogo} onChange={this.inputChangedHandler} /><br /><br />
           <label className="left">Data</label><br /><input id="date" type="text" className="input-control" name="date" value={this.state.date} onChange={this.inputChangedHandler}></input><br /><br />
           <label className="left">Numero Biglietti </label><br /><input id="seats" placeholder="10" type="number" className="input-control" name="seats" value={this.state.seats} onChange={this.inputChangedHandler} /><br /><br />
-          <label className="left">Prezzo (MilliEther) </label><br /><input id="price" placeholder="100" type="number" className="input-control" name="price" value={this.state.price} onChange={this.inputChangedHandler}></input><br /><br />
+          <label className="left">Prezzo (Wei) </label><br /><input id="price" placeholder="100" type="number" className="input-control" name="price" value={this.state.price} onChange={this.inputChangedHandler}></input><br /><br />
         <button type="submit" disabled={!this.state.buttonEnabled} className="btn waves-effect waves-light button-submit-form">{this.state.buttonText}</button>
         </form>
       </div>
