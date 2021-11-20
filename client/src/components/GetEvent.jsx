@@ -10,49 +10,51 @@ class GetEvent extends Component {
     
   constructor() {
     super();
-    
-    this.state = {
-      
-      event_list: [],
 
-    
+    //define state to save the list of the events
+    this.state = {      
+      event_list: []    
     };
-    
+
+    //connection with the blockchain
     web3=new Web3(window.ethereum)
    
   }
 
   async componentDidMount() {
+    //when the page is loaded, get the event list
     await this.onGetEvent();
   }
 
+  //function that get the event list from the blockchain
   onGetEvent = async () => {
-    const visitator = await web3.eth.getCoinbase();
-    console.log(visitator)
+    //get the address of the user 
+    const user = await web3.eth.getCoinbase();
     try{
+      //get the instance of the contract event
       const id = await web3.eth.net.getId();
       const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
-      eventInstance.methods
-      .get_events()
-      .call({from: visitator}).then((result) => {
+      //get events list from the contract
+      eventInstance.methods.get_events()
+      .call({from: user}).then((result) => {
         console.log(result);
         this.setState({ event_list: result });  
       });    
       
     }catch(e){
       console.log("Error while updating the events:"+e);
-      logger.log("Error with get events by "+JSON.stringify(visitator)+" with message: "+JSON.stringify(e.message))
+      logger.log("Error with get events by "+JSON.stringify(user)+" with message: "+JSON.stringify(e.message))
     }
   }
 
-  onBuyTicket = async (e) => {
-    //renderNotification('success', 'Successo', `Click pulsante!`+e.target.value);
-    
+  //function to buy the ticket and redirect to form to insert user data
+  onBuyTicket = async (e) => {   
     this.props.history.push({pathname: '/buy-ticket', state: e.target.value});
   }
 
 
   render() {
+    //table of the events
     return (
     <div className="container">
       <h3 className="p-3 text-center">List of Events</h3>

@@ -7,12 +7,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // This displays message that the server running and listening to specified port
-app.listen(port, () => console.log(`Listening on port ${port}`)); //Line 6
+app.listen(port, () => console.log(`Listening on port ${port}`)); 
 
+//End point "/log" of this API to create log from frontend to backend
 app.post('/log', (req, res) => {   
+  //get json arguments from the body of the request
   var json =JSON.parse(JSON.stringify(req.body))
-  console.log(json);  
+  console.log(json); 
 
+  console.log(req);
+  //for each type of message do different log
   switch(json["type"]){
     case "info":
       logger.info(json["message"])
@@ -36,7 +40,7 @@ app.post('/log', (req, res) => {
   }  
 }); 
 
-
+//End point "/test" of this API to test the connection of the server
 app.get('/test', (req,res) => {
-  res.send("Hello world")
+  res.send("Backend is online")
 })
