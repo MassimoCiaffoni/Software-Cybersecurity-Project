@@ -12,18 +12,12 @@ class Admin extends Component {
   constructor() {
     super();
     
-<<<<<<< HEAD
     this.state = {
       
       event_list: [],
       contract_balance: 0
 
     
-=======
-    //define state to save the list of the events
-    this.state = {      
-      event_list: []    
->>>>>>> 179b1f4277b4033ee853084a6eef7944686bb4f9
     };
     
     //connection with the blockchain
