@@ -50,19 +50,14 @@ class InsertUserData extends Component {
   }
 
 
-<<<<<<< HEAD
 
 
-=======
-  //function that buy the ticket and send money (eth) to event manager
->>>>>>> 179b1f4277b4033ee853084a6eef7944686bb4f9
   onBuyTicket = async (e) => {
     e.preventDefault();
     //get the address of the user (buyer)
     const buyer = await web3.eth.getAccounts();
     //get the instance of the contract ticket
     const id = await web3.eth.net.getId();
-<<<<<<< HEAD
     const ticketInstance = new web3.eth.Contract(Ticket.abi,Ticket.networks[id].address,{transactionConfirmationBlocks: 1}); 
     const buyer = await web3.eth.getAccounts();
     try {  
@@ -75,24 +70,6 @@ class InsertUserData extends Component {
       this.props.history.push({pathname: '/getevent'});
       renderNotification('success', 'Successo', 'Biglietto acquistato da '+ this.state.name + ' ' +this.state.surname );
     });
-=======
-    const ticketInstance = new web3.eth.Contract(Ticket.abi,Ticket.networks[id].address); 
-    
-    try {  
-      //send money to event manager from buyer 
-      await web3.eth.sendTransaction({ from:buyer[0],to:"0x1f60a7C633DF64183c524C511BCAE908d65DD70c", value: web3.utils.toWei(this.state.price, 'milliether')});
-      //buy the ticket
-      await ticketInstance.methods
-      .buy_ticket(this.state.eventId, this.state.name, this.state.surname)
-      .send({ from: buyer[0]})
-      .then((receipt) => {
-        console.log(receipt.events)
-        logger.log("info","Buy the ticket: "+ JSON.stringify(receipt.events) +" by " + JSON.stringify(buyer[0]))
-      });
-      //redirect to event list perfetto 
-      this.props.history.push({pathname: '/getevent'});
-      renderNotification('success', 'Successo', 'Biglietto acquistato da '+ this.state.name + ' ' +this.state.surname );
->>>>>>> 179b1f4277b4033ee853084a6eef7944686bb4f9
     }catch(err){
       console.log(err);
       if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
