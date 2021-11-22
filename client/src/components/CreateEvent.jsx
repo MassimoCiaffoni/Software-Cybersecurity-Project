@@ -96,8 +96,8 @@ class CreateEvent extends Component {
       <div className="container" align="center" >
         <h4 className="center page-title">Event creation</h4>
         <form className="form-create-event" onSubmit={this.onCreateEvent}>
-          <label className="left">Title</label><br /><input id="title" type="text" className="validate" name="title" value={this.state.title} onChange={this.inputChangedHandler} /><br /><br />
-          <label className="left">Place</label><br /><input id="place"  type="text" className="validate" name="place" value={this.state.place} onChange={this.inputChangedHandler} /><br /><br />
+          <label className="left">Title</label><br /><input id="title" placeholder={"Concert"} type="text" className="validate" name="title" value={this.state.title} onChange={this.inputChangedHandler} /><br /><br />
+          <label className="left">Place</label><br /><input id="place" placeholder={"Ancona"}  type="text" className="validate" name="place" value={this.state.place} onChange={this.inputChangedHandler} /><br /><br />
           <label className="left">Date</label><br /><input id="date" type="date" className="input-control" name="date" value={this.state.date} onChange={this.inputChangedHandler}></input><br /><br />
           <label className="left">Tickets </label><br /><input id="seats" placeholder="10" type="number" className="input-control" name="seats" value={this.state.seats} onChange={this.inputChangedHandler} /><br /><br />
           <label className="left">Price (MilliEther) </label><br /><input id="price" placeholder="100" type="number" className="input-control" name="price" value={this.state.price} onChange={this.inputChangedHandler}></input><br /><br />

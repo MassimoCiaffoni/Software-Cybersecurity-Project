@@ -11,6 +11,7 @@ import Welcome from './components/Welcome.jsx';
 import InsertUserData from './components/InsertUserData.jsx';
 import ValidateTicket from './components/ValidateTicket.jsx';
 import Admin from './components/Admin.jsx';
+import ModifyEvent from './components/ModifyEvent';
 //import logger used for logging event to server
 import logger from './utils/log-api.js'
 
@@ -103,6 +104,7 @@ render() {
               <Route path="/buy-ticket" component={InsertUserData} />
               <Route path="/tickets" component={GetTickets} />
               <Route path="/admin" component={Admin} />
+              <Route path="/modify-event" component={ModifyEvent} />
               <Route path="/" component={Welcome} />
             </Switch>
           </div>          
