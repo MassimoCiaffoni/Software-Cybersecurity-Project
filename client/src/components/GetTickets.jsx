@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
 import Event from "contracts/Event.json";
+import logger from '../utils/log-api.js'
 
 
 let web3;
@@ -33,7 +34,7 @@ class GetTickets extends Component {
       const id = await web3.eth.net.getId();
       const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
       //get ticket list from the contract
-      eventInstance.methods.get_personal_tickets(visitator)
+      eventInstance.methods.get_personal_tickets()
       .call({from: visitator}).then((result) => {
         console.log(result);
         this.setState({ ticket_list: result });  

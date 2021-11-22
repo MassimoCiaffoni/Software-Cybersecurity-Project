@@ -9,8 +9,7 @@ contract Ticket {
     address private owner;
     uint balance=owner.balance;
     address public eventAddress;
-    string private name;
-    string private surname;
+
 
     modifier only_owner() {
         require(msg.sender == owner, "Errore");
@@ -24,11 +23,6 @@ contract Ticket {
     constructor(address _eventAddress) {
         eventAddress = _eventAddress;
         owner=msg.sender;
-    }
-
-    
-    function get_address() public view returns(address){
-        return owner;
     }
 
     
@@ -48,6 +42,8 @@ contract Ticket {
         emit TicketValidated(ticketid, msg.sender);
         return flag;
     }
+
+
 
 
     
