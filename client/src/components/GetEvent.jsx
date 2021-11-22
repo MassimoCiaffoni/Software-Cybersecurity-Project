@@ -67,7 +67,7 @@ class GetEvent extends Component {
                   <th>Date</th>
                   <th>Seats</th>
                   <th>Remaining tickets</th>
-                  <th>Price</th>
+                  <th>Price (MilliEther)</th>
                   <th>State</th>
                   <th>Owner</th>
                   <th>Tickets</th>
@@ -82,7 +82,7 @@ class GetEvent extends Component {
                       <td>{event.date}</td>
                       <td>{event.seats}</td>
                       <td>{event.remaining_tickets}</td>
-                      <td>{event.price}</td>
+                      <td>{web3.utils.fromWei(event.price, "milliether")}</td>
                       <td>{event.state}</td>
                       <td>{event.owner}</td>
                       <div class="button-center"><Button variant="primary" type="button" onClick={this.onBuyTicket} value={event.id} disabled={event.remaining_tickets==='0' || event.state==="Concluso" || event.state==="Annullato"}>Buy ticket</Button>{' '}</div>
