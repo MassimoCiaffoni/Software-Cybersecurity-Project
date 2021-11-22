@@ -39,11 +39,11 @@ class CreateEvent extends Component {
     //get the instance of the contract event
     const id = await web3.eth.net.getId();
     const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);     
-    var { title, place: luogo, date, seats, price } = this.state;
+    var { title, place, date, seats, price } = this.state;
     try {    
       //create the event
       await eventInstance.methods
-      .create_event(title,luogo,date,seats,price, event_organizer[0],'0x755E4DAA0f81c115451b76e9998e1BBA3B11602F')
+      .create_event(title,place,date,seats,price, event_organizer[0],'0x755E4DAA0f81c115451b76e9998e1BBA3B11602F')
       .send({ from: event_organizer[0]})
       .then((receipt) => {
         console.log(receipt.events);
@@ -97,8 +97,8 @@ class CreateEvent extends Component {
           <label className="left">Title</label><br /><input id="title" type="text" className="validate" name="title" value={this.state.title} onChange={this.inputChangedHandler} /><br /><br />
           <label className="left">Place</label><br /><input id="place"  type="text" className="validate" name="place" value={this.state.place} onChange={this.inputChangedHandler} /><br /><br />
           <label className="left">Date</label><br /><input id="date" type="text" className="input-control" name="date" value={this.state.date} onChange={this.inputChangedHandler}></input><br /><br />
-          <label className="left">Number of tickets</label><br /><input id="seats" placeholder="10" type="number" className="input-control" name="seats" value={this.state.seats} onChange={this.inputChangedHandler} /><br /><br />
-          <label className="left">Price (MilliEther) </label><br /><input id="price" placeholder="100" type="number" className="input-control" name="price" value={this.state.price} onChange={this.inputChangedHandler}></input><br /><br />
+          <label className="left">Tickets </label><br /><input id="seats" placeholder="10" type="number" className="input-control" name="seats" value={this.state.seats} onChange={this.inputChangedHandler} /><br /><br />
+          <label className="left">Price (Wei) </label><br /><input id="price" placeholder="100" type="number" className="input-control" name="price" value={this.state.price} onChange={this.inputChangedHandler}></input><br /><br />
         <button type="submit" disabled={!this.state.buttonEnabled} className="btn waves-effect waves-light button-submit-form">{this.state.buttonText}</button>
         </form>
       </div>

@@ -32,11 +32,11 @@ class ValidateTicket extends Component {
     //get the address of the user 
     const validator = await web3.eth.getCoinbase();
     try{
-      //get the instance of the contract event
+      //get the instance of the contract ticket
       const id = await web3.eth.net.getId();
       const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
       //get tickets from the contract
-      eventInstance.methods.get_ticket_to_validate(validator)
+      eventInstance.methods.get_ticket_to_validate()
       .call({from: validator}).then((result) => {        
         this.setState({ val_ticket_list: result }); 
         console.log(this.state.val_ticket_list); 
