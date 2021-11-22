@@ -67,7 +67,7 @@ class InsertUserData extends Component {
       console.log(receipt.events)
       logger.log("info","Buy the ticket: "+ JSON.stringify(receipt.events))
       this.props.history.push({pathname: '/getevent'});
-      renderNotification('success', 'Successo', 'Biglietto acquistato da '+ this.state.name + ' ' +this.state.surname );
+      renderNotification('success', 'Successo', 'Ticket purchased by '+ this.state.name + ' ' +this.state.surname );
     });
     }catch(err){
       console.log(err);

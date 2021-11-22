@@ -71,13 +71,12 @@ class Admin extends Component {
   onFinishEvent = async (e) => {
     e.preventDefault();
    
-    /*const dialog=ReactDOM.render(<ConfirmDialog text={"Are you sure to finish the event " + e.target.value + " ?"} />, document.getElementById('popup')); 
+    const dialog=ReactDOM.render(<ConfirmDialog text={"Are you sure to finish the event " + e.target.value + " ?"} />, document.getElementById('popup')); 
     dialog.open()
-    let result = await dialog.result()
+    let result = dialog.result()
     console.log("result")
-    console.log(result)*/   
+    console.log(result) 
 
-    
     //get the address of the user (event manager)
     const event_manager = await web3.eth.getCoinbase();
     console.log(event_manager)
@@ -90,18 +89,18 @@ class Admin extends Component {
       .send({from: event_manager})
       .then((result) => {
         console.log(result.events);
-        renderNotification('success', 'Successo', `Evento terminato correttamente!`);
+        renderNotification('success', 'Successo', `Event finished correctly!`);
         logger.log("info","Finish the event: "+ JSON.stringify(result.events))
         this.onGetEvent();
       })    
       .catch((err) =>{
         console.log("Error while updating tickets:"+err);
         if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
-          renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
+          renderNotification('danger', 'Errore: ', 'Transaction canceled by user');
           logger.log('error', 'Error on finish event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(err.message))
 
         } else {
-          renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
+          renderNotification('danger', 'Errore: ', 'You are not authorized to take this action');
           logger.log('error', 'Error on finish event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(err.message))
         }
     });
@@ -123,17 +122,17 @@ class Admin extends Component {
       .send({from: event_manager})
       .then((result) => {
         console.log(result.events);
-        renderNotification('success', 'Successo', `Evento annullato!`);
+        renderNotification('success', 'Successo', `Event cancelled correctly!`);
         logger.log("info","Overlue the event: "+ JSON.stringify(result.events))
         this.onGetEvent();
       })
       .catch((e) =>{
         console.log("Error while updating tickets:"+e);
         if(e.message === 'MetaMask Tx Signature: User denied transaction signature.'){
-          renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
+          renderNotification('danger', 'Errore: ', 'Transaction canceled by user');
           logger.log('error', 'Error on invalidate event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(e.message))
         } else {
-          renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
+          renderNotification('danger', 'Errore: ', 'You are not authorized to take this action');
           logger.log('error', 'Error on invalidate event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(e.message))
         }
       });
@@ -149,7 +148,7 @@ class Admin extends Component {
     .withdraw()
     .send({from: event_manager})
     .then((result) =>{
-      renderNotification('success', 'Successo', `Ether ritirati correttamente`);
+      renderNotification('success', 'Successo', `Ether withdrawed correctly`);
       console.log(result.events)
       logger.log('info', 'Ether transfered to event manager with address: '+ JSON.stringify(result.events))
       this.onGetContractBalance();
@@ -157,10 +156,10 @@ class Admin extends Component {
     .catch((err) =>{
       console.log(err);
       if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
-        renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
+        renderNotification('danger', 'Errore: ', 'Transaction canceled by user');
         logger.log('error', 'Error on withdraw by '+JSON.stringify(event_manager)+' with message: '+JSON.stringify(err.message))
       } else {
-        renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
+        renderNotification('danger', 'Errore: ', 'You are not authorized to take this action');
         logger.log('error', 'Error on withdraw by '+JSON.stringify(event_manager)+' with message: '+JSON.stringify(err.message))
       }
 
@@ -204,7 +203,7 @@ class Admin extends Component {
                         <td>{event.state}</td>
                         <td>{event.owner}</td>
                         <div class="button-center"><Button variant="primary" type="button" onClick={this.onFinishEvent} value={event.id} disabled={event.state==="Concluso" || event.state==="Annullato"}>End Event</Button>{' '}</div>
-                        <div class="button-center"><Button variant="primary" type="button" onClick={this.onOverrlueEvent} value={event.id} disabled={event.state==="Concluso" || event.state==="Annullato"}>Overrlue Event</Button>{' '}</div>
+                        <div class="button-center"><Button variant="primary" type="button" onClick={this.onOverrlueEvent} value={event.id} disabled={event.state==="Concluso" || event.state==="Annullato"}>Cancel Event</Button>{' '}</div>
 
                     </tr>
                 )}
