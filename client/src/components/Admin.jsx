@@ -4,7 +4,8 @@ import Event from "contracts/Event.json";
 import renderNotification from '../utils/notification-handler.js';
 import Button from 'react-bootstrap/Button'
 import logger from '../utils/log-api.js'
-
+import ConfirmDialog from '../utils/ConfirmDialog.jsx'
+import ReactDOM from 'react-dom'
 
 let web3;
 
@@ -51,6 +52,14 @@ class Admin extends Component {
   //function to set an event as finished
   onFinishEvent = async (e) => {
     e.preventDefault();
+   
+    /*const dialog=ReactDOM.render(<ConfirmDialog text={"Are you sure to finish the event " + e.target.value + " ?"} />, document.getElementById('popup')); 
+    dialog.open()
+    let result = await dialog.result()
+    console.log("result")
+    console.log(result)*/   
+
+    
     //get the address of the user (event manager)
     const event_manager = await web3.eth.getCoinbase();
     console.log(event_manager)
@@ -83,6 +92,7 @@ class Admin extends Component {
   //function to overrlue an event
   onOverrlueEvent = async (e) => {
     e.preventDefault();
+    
     //get the address of the user (event manager)
     const event_manager = await web3.eth.getCoinbase();
     console.log(event_manager)
@@ -115,7 +125,9 @@ class Admin extends Component {
   render() {
     //table of the events
     return (
+        
         <div className="container">
+          
         <h3 className="p-3 text-center">List of Events</h3>
         <table className="table table-striped table-bordered">
             <thead>
@@ -151,6 +163,8 @@ class Admin extends Component {
                 )}
             </tbody>
         </table>
+        <div id="popup"></div>
+         {/*<ConfirmDialog />*/}
         </div>  
     )
   }

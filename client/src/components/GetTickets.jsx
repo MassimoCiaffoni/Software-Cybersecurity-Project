@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
 import Event from "contracts/Event.json";
-
+import logger from '../utils/log-api.js'
 
 let web3;
 

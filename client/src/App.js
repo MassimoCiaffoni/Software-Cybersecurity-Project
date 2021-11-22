@@ -34,8 +34,7 @@ class App extends Component {
 
     //get the currently connected account
     this.getAccount();    
-    
-    console.log("ciao "+ Date.now())
+        
   }
 
   //function that get the account information from blockchain and log the connection
