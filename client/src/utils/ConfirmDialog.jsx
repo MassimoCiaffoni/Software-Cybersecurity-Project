@@ -5,6 +5,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import EventEmitter from "./EventEmitter.js"
 
 export default class ConfirmDialog extends Component {
   constructor(props) {
@@ -13,46 +14,29 @@ export default class ConfirmDialog extends Component {
         open: true,
         result: ""
     };
+
+    this.emitter = new EventEmitter()
   }
 
   open = () => {
     this.setState({ open: true , result: ""});
-    
+    this.emitter = new EventEmitter()
+    return(this.emitter)
   };
-
-  /*close = () => {
-    this.setState({ open: false }); 
-  };*/
 
   yes = () => {
     this.setState({ result: "yes" , open: false}); 
-    console.log("yes")    
-    //this.close()
+    this.emitter.emit && this.emitter.emit('confirm', { message: 'yes' })
   };
   
   no = () => {
-    this.setState({ result: "no", open: false }); 
-    console.log("no")    
-    //this.close()
+    this.setState({ result: "no", open: false });  
+    this.emitter.emit && this.emitter.emit('confirm', { message: 'no' })
   };
   
-  result = () => {
-    return new Promise((resolve, reject)=> {
-      
-        if(this.state.result==="yes"){
-          resolve(true)
-        }else if(this.state.result==="no"){
-          resolve(false)
-        }       
-      
-    });
-  }
-
-
   render(){
     return (
-      <div>
-     
+      <div>     
       <Dialog
         open={this.state.open}
         onClose={this.no}

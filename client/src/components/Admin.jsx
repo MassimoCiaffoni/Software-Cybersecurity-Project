@@ -7,6 +7,7 @@ import logger from '../utils/log-api.js'
 import ConfirmDialog from '../utils/ConfirmDialog.jsx'
 import ReactDOM from 'react-dom'
 
+
 let web3;
 
 class Admin extends Component {
@@ -70,73 +71,77 @@ class Admin extends Component {
   //function to set an event as finished
   onFinishEvent = async (e) => {
     e.preventDefault();
-   
-    /*const dialog=ReactDOM.render(<ConfirmDialog text={"Are you sure to finish the event " + e.target.value + " ?"} />, document.getElementById('popup')); 
-    dialog.open()
-    let result = await dialog.result()
-    console.log("result")
-    console.log(result)*/   
+    const dialog=ReactDOM.render(<ConfirmDialog text={"Are you sure to finish the event " + e.target.value + " ?"} />, document.getElementById('popup')); 
+    var event = dialog.open()    
+    event.on && event.on('confirm', async (data) => {
+      if(data.message==="yes"){
+        //get the address of the user (event manager)
+        const event_manager = await web3.eth.getCoinbase();
+        console.log(event_manager)
+        //get the instance of the contract event
+        const id = await web3.eth.net.getId();
+        const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
+        //set the event as finished
+        eventInstance.methods
+          .finish_event(e.target.value)
+          .send({from: event_manager})
+          .then((result) => {
+            console.log(result.events);
+            renderNotification('success', 'Successo', `Evento terminato correttamente!`);
+            logger.log("info","Finish the event: "+ JSON.stringify(result.events))
+            this.onGetEvent();
+          })    
+          .catch((err) =>{
+            console.log("Error while updating tickets:"+err);
+            if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
+              renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
+              logger.log('error', 'Error on finish event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(err.message))
 
-    
-    //get the address of the user (event manager)
-    const event_manager = await web3.eth.getCoinbase();
-    console.log(event_manager)
-    //get the instance of the contract event
-    const id = await web3.eth.net.getId();
-    const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
-    //set the event as finished
-    eventInstance.methods
-      .finish_event(e.target.value)
-      .send({from: event_manager})
-      .then((result) => {
-        console.log(result.events);
-        renderNotification('success', 'Successo', `Evento terminato correttamente!`);
-        logger.log("info","Finish the event: "+ JSON.stringify(result.events))
-        this.onGetEvent();
-      })    
-      .catch((err) =>{
-        console.log("Error while updating tickets:"+err);
-        if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
-          renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
-          logger.log('error', 'Error on finish event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(err.message))
-
-        } else {
-          renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
-          logger.log('error', 'Error on finish event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(err.message))
-        }
-    });
+            } else {
+              renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
+              logger.log('error', 'Error on finish event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(err.message))
+            }
+        });
+      }
+    })
   }
 
   //function to overrlue an event
   onOverrlueEvent = async (e) => {
     e.preventDefault();
     
-    //get the address of the user (event manager)
-    const event_manager = await web3.eth.getCoinbase();
-    console.log(event_manager)
-    //get the instance of the contract event
-    const id = await web3.eth.net.getId();
-    const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
-    //set the event as overrlued
-    eventInstance.methods
-      .overrlue_event(e.target.value)
-      .send({from: event_manager})
-      .then((result) => {
-        console.log(result.events);
-        renderNotification('success', 'Successo', `Evento annullato!`);
-        logger.log("info","Overlue the event: "+ JSON.stringify(result.events))
-        this.onGetEvent();
-      })
-      .catch((e) =>{
-        console.log("Error while updating tickets:"+e);
-        if(e.message === 'MetaMask Tx Signature: User denied transaction signature.'){
-          renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
-          logger.log('error', 'Error on invalidate event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(e.message))
-        } else {
-          renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
-          logger.log('error', 'Error on invalidate event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(e.message))
-        }
-      });
+    const dialog=ReactDOM.render(<ConfirmDialog text={"Are you sure to finish the event " + e.target.value + " ?"} />, document.getElementById('popup')); 
+    var event = dialog.open()    
+    event.on && event.on('confirm', async (data) => {
+      if(data.message==="yes"){
+        //get the address of the user (event manager)
+        const event_manager = await web3.eth.getCoinbase();
+        console.log(event_manager)
+        //get the instance of the contract event
+        const id = await web3.eth.net.getId();
+        const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
+        //set the event as overrlued
+        eventInstance.methods
+          .overrlue_event(e.target.value)
+          .send({from: event_manager})
+          .then((result) => {
+            console.log(result.events);
+            renderNotification('success', 'Successo', `Evento annullato!`);
+            logger.log("info","Overlue the event: "+ JSON.stringify(result.events))
+            this.onGetEvent();
+          })
+          .catch((e) =>{
+            console.log("Error while updating tickets:"+e);
+            if(e.message === 'MetaMask Tx Signature: User denied transaction signature.'){
+              renderNotification('danger', 'Errore: ', 'Transazione anullata dal utente');
+              logger.log('error', 'Error on invalidate event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(e.message))
+            } else {
+              renderNotification('danger', 'Errore: ', 'Non sei autorizzato a compiere questa azione');
+              logger.log('error', 'Error on invalidate event by '+JSON.stringify(event_manager)+" with message: "+JSON.stringify(e.message))
+            }
+          });
+      }
+    })
   }
 
   onWithdraw = async (e) => {
