@@ -188,7 +188,7 @@ class Admin extends Component {
     //table of the events
     return (
         
-        <div className="container">
+        <div className="center">
           
         <h3 className="p-3 text-center">List of Events</h3>
         <table className="table table-striped table-bordered">

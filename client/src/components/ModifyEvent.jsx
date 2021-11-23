@@ -3,6 +3,8 @@ import Web3 from 'web3';
 import Event from "contracts/Event.json";
 import renderNotification from '../utils/notification-handler.js';
 import logger from '../utils/log-api.js'
+import ConfirmDialog from '../utils/ConfirmDialog.jsx'
+import ReactDOM from 'react-dom'
 
 let web3;
 
@@ -87,7 +89,7 @@ class ModifyEvent extends Component {
   render() {
     //form to get the event data and create the event 
      return (
-       <div className="container" align="center" >
+       <div className="center" align="center" >
          <h4 className="center page-title">Insert modified information for event {this.state.eventid}</h4>
          <form className="form-create-event" onSubmit={this.onModifyEvent}>
            <label className="left">Title</label><br /><input id="title" placeholder={"Concert"} type="text" className="validate" name="title" value={this.state.title} onChange={this.inputChangedHandler} /><br /><br />

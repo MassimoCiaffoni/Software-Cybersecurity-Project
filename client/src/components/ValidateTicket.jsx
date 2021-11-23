@@ -5,6 +5,8 @@ import Ticket from "contracts/Ticket.json";
 import renderNotification from '../utils/notification-handler.js';
 import Button from 'react-bootstrap/Button'
 import logger from '../utils/log-api.js'
+import ConfirmDialog from '../utils/ConfirmDialog.jsx'
+import ReactDOM from 'react-dom'
 
 
 let web3;
@@ -92,7 +94,7 @@ class ValidateTicket extends Component {
   render() {
     //table of the ticket
     return (
-    <div className="container">
+    <div className="center">
       <h3 className="p-3 text-center">Tickets to Validate</h3>
       <table className="table table-striped table-bordered">
           <thead>
