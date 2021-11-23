@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
+import Button from 'react-bootstrap/Button'
 import Event from "contracts/Event.json";
 import logger from '../utils/log-api.js'
 
@@ -45,6 +46,11 @@ class GetTickets extends Component {
     }
   }
 
+  onModify= async (e) => {
+    this.props.history.push({pathname: '/modify-ticket', state: e.target.value});
+  }
+  
+
   render() {
     //table of the tickets
     return (
@@ -58,6 +64,7 @@ class GetTickets extends Component {
                   <th>Surname</th>
                   <th>EventID</th>
                   <th>Customer</th>
+                  <th>Options</th> 
               </tr>
           </thead>
           <tbody>
@@ -68,6 +75,7 @@ class GetTickets extends Component {
                       <td>{ticket.surname}</td>
                       <td>{ticket.eventid}</td>
                       <td>{ticket.customer}</td>
+                      <div class="button-center"><Button variant="primary" type="button" onClick={this.onModify} value={ticket.ticketid}>Modify Ticket</Button>{' '}</div>
                   </tr>
               )}
           </tbody>

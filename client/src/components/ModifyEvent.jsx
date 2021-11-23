@@ -44,6 +44,8 @@ class ModifyEvent extends Component {
     .then((result) =>{
         console.log(result.events)
         logger.log('info', 'Event modified :'+JSON.stringify(result.events))
+        this.props.history.push({pathname: '/admin'});
+        renderNotification('success', 'Success: ', 'Event modified correctly');
     });
     this.setState({buttonText: "Modifying the event"});
     this.setState({ buttonEnabled: true});
