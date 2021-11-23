@@ -110,7 +110,7 @@ class Admin extends Component {
   onOverrlueEvent = async (e) => {
     e.preventDefault();
     
-    const dialog=ReactDOM.render(<ConfirmDialog text={"Are you sure to finish the event " + e.target.value + " ?"} />, document.getElementById('popup')); 
+    const dialog=ReactDOM.render(<ConfirmDialog text={"Are you sure to invalidate the event " + e.target.value + " ?"} />, document.getElementById('popup')); 
     var event = dialog.open()    
     event.on && event.on('confirm', async (data) => {
       if(data.message==="yes"){

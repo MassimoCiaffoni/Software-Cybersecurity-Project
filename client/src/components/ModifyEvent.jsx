@@ -37,7 +37,8 @@ class ModifyEvent extends Component {
     const id = await web3.eth.net.getId();
     const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
     var { title, place, date, seats} = this.state;
-    try{
+    this.setState({buttonText: "Modifying the event"});
+    this.setState({ buttonEnabled: true});
     eventInstance.methods
     .modify_event(this.state.eventid,title,place,date,seats,event_organizer[0])
     .send({from: event_organizer[0]})
@@ -46,11 +47,8 @@ class ModifyEvent extends Component {
         logger.log('info', 'Event modified :'+JSON.stringify(result.events))
         this.props.history.push({pathname: '/admin'});
         renderNotification('success', 'Success: ', 'Event modified correctly');
-    });
-    this.setState({buttonText: "Modifying the event"});
-    this.setState({ buttonEnabled: true});
-    }
-    catch(err){
+    })
+    .catch((err) =>{
       console.log(err);
       if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
         renderNotification('danger', 'Error: ', 'Transaction canceled by user');
@@ -60,7 +58,7 @@ class ModifyEvent extends Component {
         logger.log('error', 'Error on event modification by '+JSON.stringify(event_organizer[0])+' with message: '+JSON.stringify(err.message))
       }
 
-    }   
+    })   
   }
 
   inputChangedHandler = (e) => {

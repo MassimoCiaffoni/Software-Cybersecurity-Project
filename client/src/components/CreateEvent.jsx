@@ -40,7 +40,8 @@ class CreateEvent extends Component {
     const id = await web3.eth.net.getId();
     const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);     
     var { title, place, date, seats, price } = this.state;
-    try {    
+    this.setState({buttonText: "Publish the event"});
+    this.setState({ buttonEnabled: true});
       //create the event
       await eventInstance.methods
       .create_event(title,place,date,seats,web3.utils.toWei(price, "milliether"), event_organizer[0],'0x755E4DAA0f81c115451b76e9998e1BBA3B11602F')
@@ -48,26 +49,19 @@ class CreateEvent extends Component {
       .then((receipt) => {
         console.log(receipt.events);
         logger.log("info","Created event: "+ JSON.stringify(receipt.events))
-      });        
-      // successful notification
-      renderNotification('success', 'Success', `Event created successfully!`);
-
-      this.setState({buttonText: "Publish the event"});
-      this.setState({ buttonEnabled: true});
-      
-    }catch(err){
-      console.log(err);
-      if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
-        renderNotification('danger', 'Error: ', 'Transaction canceled by user');
-        logger.log('error', 'Error on event creation by '+JSON.stringify(event_organizer[0])+' with message: '+JSON.stringify(err.message))
-      } else {
-        renderNotification('danger', 'Error: ', 'You are not authorized to take this action');
-        logger.log('error', 'Error on event creation by '+JSON.stringify(event_organizer[0])+' with message: '+JSON.stringify(err.message))
-      }
-      this.setState({ buttonText: "Publish the event" });
-      this.setState({ buttonEnabled: true });
+        renderNotification('success', 'Success', `Event created successfully!`);
+      }) 
+      .catch((err) =>{
+        console.log(err);
+        if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
+          renderNotification('danger', 'Error: ', 'Transaction canceled by user');
+          logger.log('error', 'Error on event creation by '+JSON.stringify(event_organizer[0])+' with message: '+JSON.stringify(err.message))
+        } else {
+          renderNotification('danger', 'Error: ', 'You are not authorized to take this action');
+          logger.log('error', 'Error on event creation by '+JSON.stringify(event_organizer[0])+' with message: '+JSON.stringify(err.message))
+        }
+      })
     }
-  }
 
   //function to check the fields into form
   inputChangedHandler = (e) => {
