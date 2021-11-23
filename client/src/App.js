@@ -12,6 +12,7 @@ import InsertUserData from './components/InsertUserData.jsx';
 import ValidateTicket from './components/ValidateTicket.jsx';
 import Admin from './components/Admin.jsx';
 import ModifyEvent from './components/ModifyEvent';
+import ModifyTicket from './components/ModifyTicket';
 //import logger used for logging event to server
 import logger from './utils/log-api.js'
 
@@ -105,6 +106,7 @@ render() {
               <Route path="/tickets" component={GetTickets} />
               <Route path="/admin" component={Admin} />
               <Route path="/modify-event" component={ModifyEvent} />
+              <Route path="/modify-ticket" component={ModifyTicket} />
               <Route path="/" component={Welcome} />
             </Switch>
           </div>          
@@ -135,6 +137,7 @@ render() {
                 <Route path="/buy-ticket" component={InsertUserData} />
                 <Route path="/tickets" component={GetTickets} />
                 <Route path="/validation" component={ValidateTicket} />
+                <Route path="/modify-ticket" component={ModifyTicket} />
                 <Route path="/" component={Welcome} />      
               </Switch>
             </div>    
@@ -162,6 +165,7 @@ render() {
                 <Route path="/getevent" component={GetEvent} />
                 <Route path="/buy-ticket" component={InsertUserData} />
                 <Route path="/tickets" component={GetTickets} />
+                <Route path="/modify-ticket" component={ModifyTicket} />
                 <Route path="/" component={Welcome} />      
               </Switch>
             </div>  
