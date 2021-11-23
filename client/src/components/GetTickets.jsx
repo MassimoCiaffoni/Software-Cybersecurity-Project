@@ -54,7 +54,7 @@ class GetTickets extends Component {
   render() {
     //table of the tickets
     return (
-    <div className="container">
+    <div className="center">
       <h3 className="p-3 text-center">My Tickets</h3>
       <table className="table table-striped table-bordered">
           <thead>

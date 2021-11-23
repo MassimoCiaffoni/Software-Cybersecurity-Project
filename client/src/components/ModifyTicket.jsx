@@ -74,7 +74,7 @@ class ModifyTicket extends Component {
   render() {
     //form to get the event data and create the event 
      return (
-       <div className="container" align="center" >
+       <div className="center" align="center" >
          <h4 className="center page-title">Insert modified information for the ticket {this.state.ticketid}</h4>
          <form className="form-create-event" onSubmit={this.onModifyTicket}>
            <label className="left">Name</label><br /><input id="name"  type="text" className="validate" name="name" value={this.state.name} onChange={this.inputChangedHandler} /><br /><br />

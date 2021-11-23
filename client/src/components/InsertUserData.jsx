@@ -107,7 +107,7 @@ class InsertUserData extends Component {
  render() {
    //form to get the user data 
     return (
-      <div className="container" align="center" >
+      <div className="center" align="center" >
         <h4 className="center page-title">Insert user data to buy the ticket for the event {this.state.eventId} </h4>
         <form className="form-buy-ticket" onSubmit={this.onBuyTicket}>
           <label className="left">Name</label><br /><input id="name" type="text" className="validate" name="name" value={this.state.name} onChange={this.inputChangedHandler} /><br /><br />

@@ -87,7 +87,7 @@ class CreateEvent extends Component {
  render() {
    //form to get the event data and create the event 
     return (
-      <div className="container" align="center" >
+      <div className="center" align="center" >
         <h4 className="center page-title">Event creation</h4>
         <form className="form-create-event" onSubmit={this.onCreateEvent}>
           <label className="left">Title</label><br /><input id="title" placeholder={"Concert"} type="text" className="validate" name="title" value={this.state.title} onChange={this.inputChangedHandler} /><br /><br />
