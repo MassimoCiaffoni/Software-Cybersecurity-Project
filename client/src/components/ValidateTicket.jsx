@@ -58,29 +58,35 @@ class ValidateTicket extends Component {
   onValidateTicket = async (e) => {
     e.preventDefault();
     //get the address of the user 
-    const validator = await web3.eth.getCoinbase();
-    //get the instance of the contract ticket
-    const id = await web3.eth.net.getId();
-    const ticketInstance = new web3.eth.Contract(Ticket.abi,Ticket.networks[id].address);
-    //validate the ticket
-    ticketInstance.methods.validate_ticket(e.target.value)
-    .send({ from: validator})
-    .then((receipt) => {
-      console.log(receipt.events);
-      logger.log("info","Validate ticket: "+ JSON.stringify(receipt.events))
-      renderNotification('success', 'Success', 'Validated ticket' );
-      this.onGetValTicket();
-    }).catch((err) =>{
-      console.log("Ticket not validated or already valid : "+err);
-      if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
-          renderNotification('danger', 'Error: ', 'Transaction canceled by user');
-          logger.log('error', 'Error on validation with message: '+JSON.stringify(err.message)+" by "+JSON.stringify(validator))
-        } else {
-          renderNotification('danger', 'Error: ', 'Ticket not validated or already valid');
-          logger.log('error', 'Error on validation with message: '+JSON.stringify(err.message)+" by "+JSON.stringify(validator))
-        };
 
-    }); 
+    const dialog=ReactDOM.render(<ConfirmDialog text={"Are you sure to validate the ticket "+ e.target.value +" ?"} />, document.getElementById('popup')); 
+    var event = dialog.open()    
+    event.on && event.on('confirm', async (data) => {
+      if(data.message==="yes"){
+        const validator = await web3.eth.getCoinbase();
+        //get the instance of the contract ticket
+        const id = await web3.eth.net.getId();
+        const ticketInstance = new web3.eth.Contract(Ticket.abi,Ticket.networks[id].address);
+        //validate the ticket
+        ticketInstance.methods.validate_ticket(e.target.value)
+        .send({ from: validator})
+        .then((receipt) => {
+          console.log(receipt.events);
+          logger.log("info","Validate ticket: "+ JSON.stringify(receipt.events))
+          renderNotification('success', 'Success', 'Validated ticket' );
+          this.onGetValTicket();
+        }).catch((err) =>{
+          console.log("Ticket not validated or already valid : "+err);
+          if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
+              renderNotification('danger', 'Error: ', 'Transaction canceled by user');
+              logger.log('error', 'Error on validation with message: '+JSON.stringify(err.message)+" by "+JSON.stringify(validator))
+            } else {
+              renderNotification('danger', 'Error: ', 'Ticket not validated or already valid');
+              logger.log('error', 'Error on validation with message: '+JSON.stringify(err.message)+" by "+JSON.stringify(validator))
+            }; 
+         }); 
+      }
+    })
   }
     
   render() {
@@ -114,6 +120,7 @@ class ValidateTicket extends Component {
               )}
           </tbody>
       </table>
+      <div id="popup"></div>
       </div>
     );}  
   }

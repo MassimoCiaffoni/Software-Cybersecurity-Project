@@ -110,7 +110,7 @@ class Admin extends Component {
   onOverrlueEvent = async (e) => {
     e.preventDefault();
     
-    const dialog=ReactDOM.render(<ConfirmDialog text={"Are you sure to finish the event " + e.target.value + " ?"} />, document.getElementById('popup')); 
+    const dialog=ReactDOM.render(<ConfirmDialog text={"Are you sure to cancel the event " + e.target.value + " ?"} />, document.getElementById('popup')); 
     var event = dialog.open()    
     event.on && event.on('confirm', async (data) => {
       if(data.message==="yes"){
@@ -146,29 +146,35 @@ class Admin extends Component {
 
   onWithdraw = async (e) => {
     e.preventDefault();
-    const event_manager = await web3.eth.getCoinbase();
-    console.log(event_manager)
-    const id = await web3.eth.net.getId();
-    const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
-    eventInstance.methods
-    .withdraw()
-    .send({from: event_manager})
-    .then((result) =>{
-      renderNotification('success', 'Successo', `Ether withdrawed correctly`);
-      console.log(result.events)
-      logger.log('info', 'Ether transfered to event manager with address: '+ JSON.stringify(result.events))
-      this.onGetContractBalance();
-    })
-    .catch((err) =>{
-      console.log(err);
-      if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
-        renderNotification('danger', 'Errore: ', 'Transaction canceled by user');
-        logger.log('error', 'Error on withdraw by '+JSON.stringify(event_manager)+' with message: '+JSON.stringify(err.message))
-      } else {
-        renderNotification('danger', 'Errore: ', 'You are not authorized to take this action');
-        logger.log('error', 'Error on withdraw by '+JSON.stringify(event_manager)+' with message: '+JSON.stringify(err.message))
-      }
+    const dialog=ReactDOM.render(<ConfirmDialog text={"Are you sure to withdraw the balance?"} />, document.getElementById('popup')); 
+    var event = dialog.open()    
+    event.on && event.on('confirm', async (data) => {
+      if(data.message==="yes"){
+        const event_manager = await web3.eth.getCoinbase();
+        console.log(event_manager)
+        const id = await web3.eth.net.getId();
+        const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
+        eventInstance.methods
+        .withdraw()
+        .send({from: event_manager})
+        .then((result) =>{
+          renderNotification('success', 'Successo', `Ether withdrawed correctly`);
+          console.log(result.events)
+          logger.log('info', 'Ether transfered to event manager with address: '+ JSON.stringify(result.events))
+          this.onGetContractBalance();
+        })
+        .catch((err) =>{
+          console.log(err);
+          if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
+            renderNotification('danger', 'Errore: ', 'Transaction canceled by user');
+            logger.log('error', 'Error on withdraw by '+JSON.stringify(event_manager)+' with message: '+JSON.stringify(err.message))
+          } else {
+            renderNotification('danger', 'Errore: ', 'You are not authorized to take this action');
+            logger.log('error', 'Error on withdraw by '+JSON.stringify(event_manager)+' with message: '+JSON.stringify(err.message))
+          }
 
+        })
+      }
     })
   }
 

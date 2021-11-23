@@ -30,35 +30,41 @@ class ModifyEvent extends Component {
 
   onModifyEvent=async(e) =>{
     e.preventDefault();
-    this.setState({buttonText: "Modifying..."});
-    this.setState({ buttonEnabled: false });
-    const event_organizer = await web3.eth.getAccounts();
-    //get the instance of the contract event
-    const id = await web3.eth.net.getId();
-    const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
-    var { title, place, date, seats} = this.state;
-    try{
-    eventInstance.methods
-    .modify_event(this.state.eventid,title,place,date,seats,event_organizer[0])
-    .send({from: event_organizer[0]})
-    .then((result) =>{
-        console.log(result.events)
-        logger.log('info', 'Event modified :'+JSON.stringify(result.events))
-    });
-    this.setState({buttonText: "Modifying the event"});
-    this.setState({ buttonEnabled: true});
-    }
-    catch(err){
-      console.log(err);
-      if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
-        renderNotification('danger', 'Error: ', 'Transaction canceled by user');
-        logger.log('error', 'Error on event modification by '+JSON.stringify(event_organizer[0])+' with message: '+JSON.stringify(err.message))
-      } else {
-        renderNotification('danger', 'Error: ', 'You are not authorized to take this action');
-        logger.log('error', 'Error on event modification by '+JSON.stringify(event_organizer[0])+' with message: '+JSON.stringify(err.message))
-      }
+    const dialog=ReactDOM.render(<ConfirmDialog text={"Are you sure to modify the event "+ this.state.eventid +" ?"} />, document.getElementById('popup')); 
+    var event = dialog.open()    
+    event.on && event.on('confirm', async (data) => {
+      if(data.message==="yes"){
+        this.setState({buttonText: "Modifying..."});
+        this.setState({ buttonEnabled: false });
+        const event_organizer = await web3.eth.getAccounts();
+        //get the instance of the contract event
+        const id = await web3.eth.net.getId();
+        const eventInstance = new web3.eth.Contract(Event.abi,Event.networks[id].address);
+        var { title, place, date, seats} = this.state;
+        try{
+        eventInstance.methods
+        .modify_event(this.state.eventid,title,place,date,seats,event_organizer[0])
+        .send({from: event_organizer[0]})
+        .then((result) =>{
+            console.log(result.events)
+            logger.log('info', 'Event modified :'+JSON.stringify(result.events))
+        });
+        this.setState({buttonText: "Modifying the event"});
+        this.setState({ buttonEnabled: true});
+        }
+        catch(err){
+          console.log(err);
+          if(err.message === 'MetaMask Tx Signature: User denied transaction signature.'){
+            renderNotification('danger', 'Error: ', 'Transaction canceled by user');
+            logger.log('error', 'Error on event modification by '+JSON.stringify(event_organizer[0])+' with message: '+JSON.stringify(err.message))
+          } else {
+            renderNotification('danger', 'Error: ', 'You are not authorized to take this action');
+            logger.log('error', 'Error on event modification by '+JSON.stringify(event_organizer[0])+' with message: '+JSON.stringify(err.message))
+          }
 
-    }   
+        }   
+      }
+    });
   }
 
   inputChangedHandler = (e) => {
@@ -90,6 +96,7 @@ class ModifyEvent extends Component {
            <label className="left">New Tickets </label><br /><input id="seats" placeholder="10" type="number" className="input-control" name="seats" value={this.state.seats} onChange={this.inputChangedHandler} /><br /><br />
          <button type="submit" disabled={!this.state.buttonEnabled} className="btn waves-effect waves-light button-submit-form">{this.state.buttonText}</button>
          </form>
+         <div id="popup"></div>
        </div>
      )
    }
