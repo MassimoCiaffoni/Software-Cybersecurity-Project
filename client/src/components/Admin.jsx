@@ -226,7 +226,7 @@ class Admin extends Component {
             </tbody>
         </table>
         <div id="popup"></div>
-         {/*<ConfirmDialog />*/}         
+              
         <div>
         <h3 className="p-3 text-center">WithDraw Ether</h3>
         <div class="button-center"><Button variant="primary" type="button" onClick={this.onWithdraw} disabled={this.state.contract_balance==='0'}>Withdraw</Button>{' '}</div><br /><br /><br />

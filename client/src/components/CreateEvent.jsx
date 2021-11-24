@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
 import Event from "contracts/Event.json";
+import Button from 'react-bootstrap/Button'
 import renderNotification from '../utils/notification-handler.js';
 import logger from '../utils/log-api.js'
 
@@ -96,7 +97,7 @@ class CreateEvent extends Component {
           <label className="left">Date</label><br /><input id="date" type="date" className="input-control" name="date" value={this.state.date} onChange={this.inputChangedHandler}></input><br /><br />
           <label className="left">Tickets </label><br /><input id="seats" placeholder="10" type="number" className="input-control" name="seats" value={this.state.seats} onChange={this.inputChangedHandler} /><br /><br />
           <label className="left">Price (MilliEther) </label><br /><input id="price" placeholder="100" type="number" className="input-control" name="price" value={this.state.price} onChange={this.inputChangedHandler}></input><br /><br />
-        <button type="submit" disabled={!this.state.buttonEnabled} className="btn waves-effect waves-light button-submit-form">{this.state.buttonText}</button>
+        <Button variant="primary" type="button" type="submit" disabled={!this.state.buttonEnabled}>{this.state.buttonText}</Button>
         </form>
       </div>
     )

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
 import renderNotification from '../utils/notification-handler.js';
+import Button from 'react-bootstrap/Button'
 import Ticket from "contracts/Ticket.json";
 import Event from "contracts/Event.json";
 import ConfirmDialog from '../utils/ConfirmDialog.jsx'
@@ -112,7 +113,7 @@ class InsertUserData extends Component {
         <form className="form-buy-ticket" onSubmit={this.onBuyTicket}>
           <label className="left">Name</label><br /><input id="name" type="text" className="validate" name="name" value={this.state.name} onChange={this.inputChangedHandler} /><br /><br />
           <label className="left">Surname</label><br /><input id="surname"  type="text" className="validate" name="surname" value={this.state.surname} onChange={this.inputChangedHandler} /><br /><br />
-        <button type="submit" disabled={!this.state.buttonEnabled} className="btn waves-effect waves-light button-submit-form">Buy the ticket</button>
+          <Button variant="primary" type="button" type="submit" disabled={!this.state.buttonEnabled}>Buy the ticket</Button>
         </form>
         <div id="popup"></div>
                   
