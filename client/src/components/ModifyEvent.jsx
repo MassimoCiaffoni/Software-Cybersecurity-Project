@@ -97,7 +97,7 @@ class ModifyEvent extends Component {
            <label className="left">Place</label><br /><input id="place" placeholder={"Ancona"}  type="text" className="validate" name="place" value={this.state.place} onChange={this.inputChangedHandler} /><br /><br />
            <label className="left">Date</label><br /><input id="date" type="date" className="input-control" name="date" value={this.state.date} onChange={this.inputChangedHandler}></input><br /><br />
            <label className="left">New Tickets </label><br /><input id="seats" placeholder="10" type="number" className="input-control" name="seats" value={this.state.seats} onChange={this.inputChangedHandler} /><br /><br />
-           <Button variant="primary" type="button" disabled={!this.state.buttonEnabled}>{this.state.buttonText}</Button>
+           <Button variant="primary" type="button" type="submit" disabled={!this.state.buttonEnabled}>{this.state.buttonText}</Button>
          </form>
          <div id="popup"></div>
        </div>
