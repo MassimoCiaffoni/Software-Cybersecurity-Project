@@ -79,7 +79,7 @@ To launch it, we have to do the following steps:
 2. Now change directory and go under /client folder.
 3. We have to install the dependencies used into project. So run the command:
     ```sh
-    npm install
+    npm install --no-audit
     ```
 4. Now we can finally execute the web-app. Now run this command to start the server. It will open a new tab on the browser with the app!
     ```sh
