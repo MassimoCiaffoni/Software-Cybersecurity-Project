@@ -87,7 +87,7 @@ To launch it, we have to do the following steps:
     ```
 
 ## 💻 Usage
-
+For usage guide, see the detailed [report](relazione/Blockchain-ticketing.pdf) from page 101.
 
 
 ## ✍️ Author
