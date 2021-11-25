@@ -85,7 +85,14 @@ To launch it, we have to do the following steps:
     ```sh
     npm run start-all
     ```
+5. Now we need to connect our metamask accounts to the WebApp. For this purpose go to the three dot options and select connect to site
 
+    <a><img src="images/screenshot/metamask9.jpg" height='400' align="center"/></a>
+    
+    Metamask will ask which accounts we want to connect; select all imported accounts
+   
+    <a><img src="images/screenshot/metamask10.jpg" height='400' align="center"/></a>
+6. Now we are connected to the WebApp and ready to test all his functionalities.
 ## 💻 Usage
 For usage guide, see the detailed [report](relazione/Blockchain-ticketing.pdf) from page 101.
 
